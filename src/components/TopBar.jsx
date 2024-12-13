@@ -2,19 +2,30 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const TopBar = () => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false); // ... 드롭다운 상태
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
+    const [isMessageOpen, setMessageOpen] = useState(false); // 메시지 모달 상태
+    const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
 
     const toggleNotification = () => {
         setNotificationOpen(!isNotificationOpen);
+        setMessageOpen(false); // 메시지 창 닫기
+        setDropdownOpen(false); // 드롭다운 창 닫기
+    };
+
+    const toggleMessage = () => {
+        setMessageOpen(!isMessageOpen);
+        setNotificationOpen(false); // 알림 창 닫기
+        setDropdownOpen(false); // 드롭다운 창 닫기
     };
 
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
+        setNotificationOpen(false); // 알림 창 닫기
+        setMessageOpen(false); // 메시지 창 닫기
     };
 
     return (
-        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 text-gray-600">
+        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 text-gray-600 relative">
             {/* 로고 섹션 */}
             <Link to="/" className="text-2xl font-bold">
                 <img src="/durcit-header-logo.png" alt="Durcit Logo" className="w-28 h-auto" />
@@ -30,7 +41,7 @@ const TopBar = () => {
             </div>
 
             {/* 버튼 섹션 */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 relative">
                 {/* 알림 버튼 */}
                 <button
                     className="text-yellow-500 text-xl hover:text-yellow-600 focus:outline-none"
@@ -39,9 +50,7 @@ const TopBar = () => {
                     🔔
                 </button>
                 {isNotificationOpen && (
-                    <div
-                        className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50"
-                    >
+                    <div className="absolute right-16 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50">
                         <div className="p-4">
                             <h3 className="text-lg font-semibold mb-2">알림</h3>
                             <ul className="space-y-2">
@@ -49,8 +58,51 @@ const TopBar = () => {
                                 <li>새로운 팔로워 1명</li>
                             </ul>
                             <button
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
                                 onClick={toggleNotification}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* 메시지 버튼 */}
+                <button
+                    className="text-blue-500 text-xl hover:text-blue-600 focus:outline-none"
+                    onClick={toggleMessage}
+                >
+                    💬
+                </button>
+                {isMessageOpen && (
+                    <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50">
+                        <div className="p-4">
+                            <h3 className="text-lg font-semibold mb-2">Chats</h3>
+                            <ul className="space-y-2">
+                                <li>
+                                    <div className="flex items-center space-x-2">
+                                        <img
+                                            src="/cute.png"
+                                            alt="User Avatar"
+                                            className="w-8 h-8 rounded-full"
+                                        />
+                                        <span>Chat with User123</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="flex items-center space-x-2">
+                                        <img
+                                            src="/cute1.png"
+                                            alt="User Avatar"
+                                            className="w-8 h-8 rounded-full"
+                                        />
+                                        <span>Chat with User456</span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <button
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
+                                onClick={toggleMessage}
                             >
                                 Close
                             </button>
