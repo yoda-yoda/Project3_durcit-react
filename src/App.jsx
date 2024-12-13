@@ -6,6 +6,7 @@ import MainFeed from "./pages/MainFeed";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthRedirect from "./pages/AuthRedirect";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/auth" element={<AuthRedirect />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </div>
