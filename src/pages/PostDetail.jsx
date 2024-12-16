@@ -9,6 +9,7 @@ const mockPostData = {
     "This is a detailed description of the post. Here you can discuss and share your thoughts about the game community.",
   author: { name: "John Doe", profileImage: "https://via.placeholder.com/50" },
   createdAt: "2 hours ago",
+  tags: ["Game", "Community", "Fun"],
   likes: 120,
   reactions: { "👍": 10, "❤️": 5, "😂": 3, "😢": 2 },
   comments: [
@@ -41,6 +42,7 @@ const PostDetail = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isAddingComment, setIsAddingComment] = useState(false); // To toggle input box
   const [newComment, setNewComment] = useState(""); // To capture comment text
+  const [mentions, setMentions] = useState([]);
 
   useEffect(() => {
     // Simulate fetching post data
@@ -79,6 +81,12 @@ const PostDetail = () => {
     setNewComment(""); // Clear input field
   };
 
+  const handleRemoveMention = (index) => {
+    setMentions((prevMentions) =>
+      prevMentions.filter((_, i) => i !== index) // Keep all mentions except the clicked one
+    );
+  };
+
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -101,6 +109,17 @@ const PostDetail = () => {
           </div>
         </div>
         <p className="text-gray-700">{post.content}</p>
+
+        {/* Tags Section */}
+        <div className="mt-4">
+          <div className="flex gap-2">
+            {post?.tags?.map((tag, index) => (
+              <span key={index} className="font-semibold text-gray-800">
+          #{tag}
+        </span>
+            ))}
+          </div>
+        </div>
 
         {/* Like and Reaction Buttons */}
         <div className="flex items-center gap-4 mt-4">
@@ -152,23 +171,53 @@ const PostDetail = () => {
               rows={2} // Two lines
               className="w-full px-4 py-2 rounded-full shadow bg-gray-200 text-gray-700 resize-none"
             />
-            {/* Buttons */}
-            <div className="flex justify-end mt-2 gap-2">
-              {/* Cancel Button */}
-              <button
-                onClick={handleCancelComment}
-                className="px-4 py-2 text-gray-700 rounded-full shadow hover:bg-gray-300"
-              >
-                Cancel
-              </button>
 
-              {/* Comment Button */}
+            {/* Buttons */}
+            <div className="flex justify-between items-center mt-2 gap-4">
+              {/* Make a Mention */}
               <button
-                onClick={handleAddComment}
+                onClick={() => {
+                  if (newComment.trim()) {
+                    setMentions((prev) => [...prev, newComment.trim()]);
+                    setNewComment(""); // Clear input
+                  }
+                }}
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full shadow hover:bg-gray-300"
               >
-                Comment
+                Make a Mention
               </button>
+
+              {/* Cancel and Comment Buttons */}
+              <div className="flex justify-end gap-2">
+                {/* Cancel Button */}
+                <button
+                  onClick={handleCancelComment}
+                  className="px-4 py-2 text-gray-700 rounded-full shadow hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+
+                {/* Comment Button */}
+                <button
+                  onClick={handleAddComment}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full shadow hover:bg-gray-300"
+                >
+                  Comment
+                </button>
+              </div>
+            </div>
+
+            {/* Display Mentions */}
+            <div className="flex flex-wrap items-center mt-4 gap-2">
+              {mentions.map((mention, index) => (
+                <span
+                  key={index}
+                  className="px-4 py-2 bg-gray-50 text-gray-000 font-bold rounded-full shadow"
+                  onClick={() => handleRemoveMention(index)}
+                >
+            @{mention}
+          </span>
+              ))}
             </div>
           </div>
         ) : (
@@ -180,6 +229,7 @@ const PostDetail = () => {
           </button>
         )}
       </div>
+
 
       {/* Comments Section */}
       <div className="bg-white p-4 rounded shadow">
