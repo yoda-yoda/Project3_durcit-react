@@ -9,6 +9,7 @@ import AuthRedirect from "./pages/AuthRedirect";
 import Post from "./pages/Post";
 import Profile from "./pages/Profile";
 import PostDetail from "./pages/PostDetail";
+import CreatePost from "./pages/CreatePost";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/post" element={<Post />} ></Route>
             <Route path="/profile" element={<Profile />} />
             <Route path="/posts/:postId" element={<PostDetail />} />
+            <Route path="/create-post" element={<CreatePost />}></Route>
           </Routes>
         </div>
       </div>
