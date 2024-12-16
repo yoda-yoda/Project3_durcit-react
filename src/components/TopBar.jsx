@@ -1,10 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Login from "../pages/Login";
+import axios from "axios";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
     const [isMessageOpen, setMessageOpen] = useState(false); // 메시지 모달 상태
     const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
+    const [isLoginOpen, setLoginOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("accessToken");
+        setIsLoggedIn(!!token);
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            const refreshToken = localStorage.getItem("refreshToken");
+
+            // Send logout request to backend
+            if (refreshToken) {
+                await axios.post("http://localhost:8080/auth/logout", { refreshToken });
+
+                // Clear tokens from localStorage
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+
+                // Redirect to home confirmation page
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Logout failed:", error);
+
+            // Clear tokens even if logout fails
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            navigate("/");
+        }
+    };
+
 
     const toggleNotification = () => {
         setNotificationOpen(!isNotificationOpen);
@@ -44,117 +81,137 @@ const TopBar = () => {
             <div className="flex items-center space-x-4 relative">
                 {/* 알림 버튼 */}
                 <button
-                    className="text-yellow-500 text-xl hover:text-yellow-600 focus:outline-none"
-                    onClick={toggleNotification}
+                  className="text-yellow-500 text-xl hover:text-yellow-600 focus:outline-none"
+                  onClick={toggleNotification}
                 >
                     🔔
                 </button>
                 {isNotificationOpen && (
-                    <div className="absolute right-16 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50">
-                        <div className="p-4">
-                            <h3 className="text-lg font-semibold mb-2">알림</h3>
-                            <ul className="space-y-2">
-                                <li>게시물에 댓글이 달렸습니다</li>
-                                <li>새로운 팔로워 1명</li>
-                            </ul>
-                            <button
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
-                                onClick={toggleNotification}
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
+                  <div
+                    className="absolute right-16 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50">
+                      <div className="p-4">
+                          <h3 className="text-lg font-semibold mb-2">알림</h3>
+                          <ul className="space-y-2">
+                              <li>게시물에 댓글이 달렸습니다</li>
+                              <li>새로운 팔로워 1명</li>
+                          </ul>
+                          <button
+                            className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
+                            onClick={toggleNotification}
+                          >
+                              Close
+                          </button>
+                      </div>
+                  </div>
                 )}
 
                 {/* 메시지 버튼 */}
                 <button
-                    className="text-blue-500 text-xl hover:text-blue-600 focus:outline-none"
-                    onClick={toggleMessage}
+                  className="text-blue-500 text-xl hover:text-blue-600 focus:outline-none"
+                  onClick={toggleMessage}
                 >
                     💬
                 </button>
                 {isMessageOpen && (
-                    <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50">
-                        <div className="p-4">
-                            <h3 className="text-lg font-semibold mb-2">Chats</h3>
-                            <ul className="space-y-2">
-                                <li>
-                                    <div className="flex items-center space-x-2">
-                                        <img
-                                            src="/cute.png"
-                                            alt="User Avatar"
-                                            className="w-8 h-8 rounded-full"
-                                        />
-                                        <span>Chat with User123</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="flex items-center space-x-2">
-                                        <img
-                                            src="/cute1.png"
-                                            alt="User Avatar"
-                                            className="w-8 h-8 rounded-full"
-                                        />
-                                        <span>Chat with User456</span>
-                                    </div>
-                                </li>
-                            </ul>
-                            <button
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
-                                onClick={toggleMessage}
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
+                  <div
+                    className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50">
+                      <div className="p-4">
+                          <h3 className="text-lg font-semibold mb-2">Chats</h3>
+                          <ul className="space-y-2">
+                              <li>
+                                  <div className="flex items-center space-x-2">
+                                      <img
+                                        src="/cute.png"
+                                        alt="User Avatar"
+                                        className="w-8 h-8 rounded-full"
+                                      />
+                                      <span>Chat with User123</span>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div className="flex items-center space-x-2">
+                                      <img
+                                        src="/cute1.png"
+                                        alt="User Avatar"
+                                        className="w-8 h-8 rounded-full"
+                                      />
+                                      <span>Chat with User456</span>
+                                  </div>
+                              </li>
+                          </ul>
+                          <button
+                            className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
+                            onClick={toggleMessage}
+                          >
+                              Close
+                          </button>
+                      </div>
+                  </div>
                 )}
 
                 {/* 로그인 버튼 */}
-                <Link
-                    to="/login"
-                    className="bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-600 transition duration-300"
-                >
-                    Log In
-                </Link>
+                <div>
+                    <div>
+                        {isLoggedIn ? (
+                          // Logout button
+                          <button
+                            onClick={handleLogout}
+                            className="bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300"
+                          >
+                              Logout
+                          </button>
+                        ) : (
+                          // Login button
+                          <button
+                            onClick={() => setLoginOpen(true)}
+                            className="bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300"
+                          >
+                              Login
+                          </button>
+                        )}
+                    </div>
+
+                    {/* Login Modal */}
+                    <Login isOpen={isLoginOpen} onClose={() => setLoginOpen(false)}/>
+                </div>
 
                 {/* ... 버튼 */}
                 <div className="relative">
                     <button
-                        className="bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-300 transition duration-300"
-                        onClick={toggleDropdown}
+                      className="bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-300 transition duration-300"
+                      onClick={toggleDropdown}
                     >
                         ...
                     </button>
                     {isDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                            <ul className="p-2 space-y-2">
-                                <li>
-                                    <Link
-                                        to="/profile"
-                                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                    >
-                                        <span role="img" aria-label="profile">👤</span> Profile
-                                    </Link>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                    >
-                                        <span role="img" aria-label="settings">⚙️</span> Settings
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                    >
-                                        <span role="img" aria-label="logout">🚪</span> Log Out
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+                          <ul className="p-2 space-y-2">
+                              <li>
+                                  <Link
+                                    to="/profile"
+                                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
+                                  >
+                                      <span role="img" aria-label="profile">👤</span> Profile
+                                  </Link>
+                              </li>
+                              <li>
+                                  <a
+                                    href="#"
+                                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
+                                  >
+                                      <span role="img" aria-label="settings">⚙️</span> Settings
+                                  </a>
+                              </li>
+                              <li>
+                                  <a
+                                    href="#"
+                                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
+                                  >
+                                      <span role="img" aria-label="logout">🚪</span> Log Out
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
                     )}
                 </div>
             </div>
