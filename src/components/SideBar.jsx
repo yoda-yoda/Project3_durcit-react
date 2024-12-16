@@ -1,25 +1,44 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import {
+    HomeIcon,
+    UserIcon,
+    PencilSquareIcon,
+    BellIcon,
+} from "@heroicons/react/24/outline"; // Heroicons import
 
-const SideBar = () => {
-  return (
-    <div className="w-64 h-screen bg-gray-100 fixed top-30 left-0 shadow-md">
-      <nav className="flex flex-col py-6 px-4">
-        <Link to="/" className="mb-4 text-lg font-semibold text-gray-700 hover:text-blue-500">
-          Home
-        </Link>
-        <Link to="/profile" className="mb-4 text-lg font-semibold text-gray-700 hover:text-blue-500">
-          Profile
-        </Link>
-        <Link to="/create-post" className="mb-4 text-lg font-semibold text-gray-700 hover:text-blue-500">
-          Create Post
-        </Link>
-        <Link to="/notifications" className="mb-4 text-lg font-semibold text-gray-700 hover:text-blue-500">
-          Notifications
-        </Link>
-      </nav>
-    </div>
+const Sidebar = () => {
+  const location = useLocation();
+
+    const menuItems = [
+        { name: "Home", path: "/", icon: <HomeIcon className="w-6 h-6" /> },
+        { name: "Profile", path: "/profile", icon: <UserIcon className="w-6 h-6" /> },
+        { name: "Create Post", path: "/create-post", icon: <PencilSquareIcon className="w-6 h-6" /> },
+        { name: "Notifications", path: "/notifications", icon: <BellIcon className="w-6 h-6" /> },
+    ];
+
+
+    return (
+      <div className="h-screen w-64 bg-gray-100 text-gray-700 p-4 space-y-6 fixed top-16">
+        <ul className="space-y-4">
+          {menuItems.map((item) => (
+              <li key={item.name}>
+                <Link
+                    to={item.path}
+                    className={`flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-200 ${
+                        location.pathname === item.path
+                            ? "bg-gray-300 font-semibold text-gray-900"
+                            : ""
+                    }`}
+                >
+                  <span>{item.icon}</span>
+                  {item.name}
+                </Link>
+              </li>
+          ))}
+        </ul>
+      </div>
   );
 };
 
-export default SideBar;
+export default Sidebar;
