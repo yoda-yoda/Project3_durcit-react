@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MainFeedTopBar from "../components/MainFeedTopbar";
-
+import { useNavigate } from "react-router-dom";
 
 const MainFeed = () => {
   const [selectedOption, setSelectedOption] = useState("Best");
@@ -9,6 +9,8 @@ const MainFeed = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 5; // 한 번에 가져올 게시물 개수
+
+  const navigate = useNavigate();
 
   // 더미 데이터 생성 (실제로는 API 요청)
   const mockFetchPosts = (page) => {
@@ -97,6 +99,7 @@ const MainFeed = () => {
           <div
             key={post.id}
             className="mb-6 p-4 bg-white rounded shadow hover:bg-gray-100 transition flex items-center"
+            onClick={() => navigate(`/posts/${post.id}`)}
           >
             {/* 왼쪽: 작성자 정보와 텍스트 */}
             <div className="flex-1">
