@@ -43,6 +43,8 @@ const PostDetail = () => {
   const [isAddingComment, setIsAddingComment] = useState(false); // To toggle input box
   const [newComment, setNewComment] = useState(""); // To capture comment text
   const [mentions, setMentions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
 
   useEffect(() => {
     // Simulate fetching post data
@@ -52,6 +54,16 @@ const PostDetail = () => {
       setReactions(mockPostData.reactions);
     }, 500);
   }, [postId]);
+
+  const handleUpdate = () => {
+    alert("Update post clicked"); // Replace with actual update logic
+    setShowDropdown(false); // Close dropdown
+  };
+
+  const handleDelete = () => {
+    alert("Delete post clicked"); // Replace with actual delete logic
+    setShowDropdown(false); // Close dropdown
+  };
 
   const handleLike = () => {
     setLikes((prevLikes) => prevLikes + 1);
@@ -95,20 +107,52 @@ const PostDetail = () => {
     <div className="min-h-screen p-6">
       {/* Post Content */}
       <div className="bg-white p-4 rounded shadow mb-6">
-        <div className="flex items-center mb-4">
-          <img
-            src={post.author.profileImage}
-            alt={post.author.name}
-            className="w-12 h-12 rounded-full mr-3"
-          />
-          <div>
-            <h1 className="text-xl font-semibold">{post.title}</h1>
-            <div className="text-gray-500 text-sm">
-              By {post.author.name} • {post.createdAt}
+        {/* Post Content */}
+        <div className="relative">
+          {/* Three Dots Button */}
+          <div className="absolute top-2 right-2">
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              &#8942; {/* Vertical three dots */}
+            </button>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded">
+                <button
+                  onClick={handleUpdate}
+                  className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Post Header */}
+          <div className="flex items-center mb-4">
+            <img
+              src={post.author.profileImage}
+              alt={post.author.name}
+              className="w-12 h-12 rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-xl font-semibold">{post.title}</h1>
+              <div className="text-gray-500 text-sm">
+                By {post.author.name} • {post.createdAt}
+              </div>
             </div>
           </div>
+          <p className="text-gray-700">{post.content}</p>
         </div>
-        <p className="text-gray-700">{post.content}</p>
 
         {/* Tags Section */}
         <div className="mt-4">
