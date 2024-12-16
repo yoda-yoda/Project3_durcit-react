@@ -101,7 +101,10 @@ const Login = ({ isOpen, onClose }) => {
 
                   </form>
                   <button
-                    onClick={() => navigate("/register")}
+                    onClick={() => {
+                        onClose(); // Close the login modal
+                        navigate("/register");
+                    }}
                     className="mt-4 text-red-700 hover:underline"
                   >
                       계정이 없으신가요? 가입하기
