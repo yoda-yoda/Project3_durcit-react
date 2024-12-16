@@ -50,22 +50,22 @@ const Login = ({ isOpen, onClose }) => {
 
               {/* Login Content */}
               <h1 className="text-2xl font-bold mb-4 text-center">Social Login</h1>
-              <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-4 items-center">
                   <a
                     href="http://localhost:8080/oauth2/authorization/google"
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    className="flex justify-center items-center min-w-36 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 "
                   >
                       Google 로그인
                   </a>
                   <a
                     href="http://localhost:8080/oauth2/authorization/kakao"
-                    className="px-6 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500"
+                    className="flex justify-center items-center min-w-36 px-4 py-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500"
                   >
                       Kakao 로그인
                   </a>
                   <a
                     href="http://localhost:8080/oauth2/authorization/naver"
-                    className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    className="flex justify-center items-center min-w-36 px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600"
                   >
                       Naver 로그인
                   </a>
@@ -79,7 +79,7 @@ const Login = ({ isOpen, onClose }) => {
                         placeholder="이메일"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                         required
                       />
                       <input
@@ -87,19 +87,22 @@ const Login = ({ isOpen, onClose }) => {
                         placeholder="비밀번호"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                         required
                       />
-                      <button
-                        type="submit"
-                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                      >
-                          로그인
-                      </button>
+                      <div className="">
+                          <button
+                            type="submit"
+                            className="w-full px-4 py-2 bg-red-700 text-white rounded-full hover:bg-red-800"
+                          >
+                              로그인
+                          </button>
+                      </div>
+
                   </form>
                   <button
                     onClick={() => navigate("/register")}
-                    className="mt-4 text-blue-500 hover:underline"
+                    className="mt-4 text-red-700 hover:underline"
                   >
                       계정이 없으신가요? 가입하기
                   </button>
