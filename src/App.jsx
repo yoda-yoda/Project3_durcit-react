@@ -11,6 +11,8 @@ import Profile from "./pages/Profile";
 import PostDetail from "./pages/PostDetail";
 import CreatePost from "./pages/CreatePost";
 import EmailVerificationSuccess from "./pages/EmailVerificationSuccess";
+import RequestVerificationCode from "./pages/password/RequestVerificationCode";
+import ResetPassword from "./pages/password/ResetPassword";
 
 const App = () => {
   return (
@@ -31,6 +33,8 @@ const App = () => {
             <Route path="/posts/:postId" element={<PostDetail />} />
             <Route path="/create-post" element={<CreatePost />}></Route>
             <Route path="/email-verification-success" element={<EmailVerificationSuccess />}></Route>
+            <Route path="/request-verification" element={<RequestVerificationCode />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </div>
       </div>
