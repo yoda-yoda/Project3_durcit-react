@@ -7,6 +7,7 @@ import EmojiPicker from "emoji-picker-react";
 import { connectWebSocket, addEmoji, disconnectWebSocket } from "../utils/webSocket";
 import apiClient from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
+import ProfileHoverCard from "../components/profile/ProfileHoverCard";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -49,7 +50,6 @@ const PostDetail = () => {
     }
   };
 
-
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
 
@@ -67,8 +67,6 @@ const PostDetail = () => {
 
     setReactions(newReactions);
   };
-
-
 
   const handleLike = async () => {
     if (!checkAuth()) return;
@@ -163,12 +161,14 @@ const PostDetail = () => {
           </div>
 
           <div className="flex items-center mb-4">
-            <img
-              src={post.post.userThumbnail}
-              alt={post.post.author}
-              className="w-12 h-12 rounded-full mr-3"
+            <ProfileHoverCard
+              profileImage={post.post.userThumbnail}
+              username={post.post.author}
+              nickname={post.post.author}
+              onFollow={() => alert(`Followed ${post.post.author}`)}
+              onChat={() => alert(`Started chat with ${post.post.author}`)}
             />
-            <div>
+            <div className="ml-4">
               <h1 className="text-xl font-semibold">{post.post.title}</h1>
               <div className="text-gray-500 text-sm">
                 By {post.post.author} • {post.post.createdAt}
@@ -281,40 +281,38 @@ const PostDetail = () => {
               </button>
             </div>
           </div>
-        ) : (
-          <button
-            onClick={() => setIsAddingComment(true)}
-            className="flex items-center px-4 py-2 text-gray-800 bg-white rounded-full shadow hover:bg-gray-200"
-          >
-            + Add a Comment
-          </button>
-        )}
+        ) :
+          (
+            <button
+              onClick={() => setIsAddingComment(true)}
+              className="flex items-center px-4 py-2 text-gray-800 bg-white rounded-full shadow hover:bg-gray-200"
+            >
+              + Add a Comment
+            </button>
+          )}
       </div>
 
       <div className="bg-white p-4 rounded shadow">
         <h2 className="text-lg font-semibold mb-4">Comments</h2>
-        {/*{post.comments.map((comment) => (*/}
-        {/*  <div key={comment.id} className="mb-4">*/}
-        {/*    <div className="flex items-start mb-2">*/}
-        {/*      <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>*/}
-        {/*      <div>*/}
-        {/*        <div className="font-semibold">{comment.author}</div>*/}
-        {/*        <p className="text-gray-700">{comment.content}</p>*/}
-        {/*      </div>*/}
-        {/*    </div>*/}
-        {/*    {comment.replies.map((reply) => (*/}
-        {/*      <div key={reply.id} className="ml-12 mt-2">*/}
-        {/*        <div className="flex items-start">*/}
-        {/*          <div className="w-8 h-8 bg-gray-200 rounded-full mr-3"></div>*/}
-        {/*          <div>*/}
-        {/*            <div className="font-semibold">{reply.author}</div>*/}
-        {/*            <p className="text-gray-700">{reply.content}</p>*/}
-        {/*          </div>*/}
-        {/*        </div>*/}
-        {/*      </div>*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*))}*/}
+        {post.comments && post.comments.length > 0 ? (
+          post.comments.map((comment) => (
+            <div key={comment.id} className="mb-4">
+              <div className="flex items-start mb-2">
+                <img
+                  src={comment.userThumbnail || "/default-avatar.png"}
+                  alt={comment.author}
+                  className="w-10 h-10 rounded-full mr-3"
+                />
+                <div>
+                  <div className="font-semibold">{comment.author}</div>
+                  <p className="text-gray-700">{comment.content}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600">No comments yet. Be the first to comment!</p>
+        )}
       </div>
     </div>
   );

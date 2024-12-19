@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TopBar from "./components/TopBar";
 import SideBar from "./components/SideBar";
+import ChatButton from "./components/chat/ChatButton";
 import MainFeed from "./pages/MainFeed";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -38,6 +39,7 @@ const App = () => {
           </Routes>
         </div>
       </div>
+      <ChatButton />
     </Router>
   );
 };
