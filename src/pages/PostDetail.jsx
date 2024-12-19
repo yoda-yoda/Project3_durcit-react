@@ -165,6 +165,7 @@ const PostDetail = () => {
               profileImage={post.post.userThumbnail}
               username={post.post.author}
               nickname={post.post.author}
+              targetMemberId={post.post.id}
               onFollow={() => alert(`Followed ${post.post.author}`)}
               onChat={() => alert(`Started chat with ${post.post.author}`)}
             />

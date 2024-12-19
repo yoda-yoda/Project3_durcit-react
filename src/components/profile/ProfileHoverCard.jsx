@@ -1,9 +1,26 @@
 import React, { useState } from "react";
+import apiClient from "../../utils/apiClient";
 
-const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, onChat }) => {
+const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMemberId }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const defaultImage = "/default-avatar.png"; // 대체 이미지 경로
+
+  const handleNewChat = async () => {
+    try {
+      const response = await apiClient.post("/rooms", {
+        memberId: localStorage.getItem("memberId"),
+        targetMemberId: targetMemberId,
+      });
+
+      const chatRoom = response.data;
+      alert(`채팅방이 생성되었습니다. Room ID: ${chatRoom.roomId}`);
+    } catch (error) {
+      console.error("채팅방 생성 중 오류 발생:", error);
+      alert("채팅방 생성에 실패했습니다.");
+    }
+  };
+
 
   return (
     <div
@@ -43,7 +60,7 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, onChat }
               Follow
             </button>
             <button
-              onClick={onChat}
+              onClick={handleNewChat}
               className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition"
             >
               New Chat

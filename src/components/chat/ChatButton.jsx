@@ -11,6 +11,7 @@ const ChatButton = () => {
     {
       id: 1,
       name: "유저1",
+      opponentId: 101, // 상대방 ID 추가
       profileImage: "/user1.png",
       messages: [
         { sender: "me", content: "안녕하세요!" },
@@ -21,6 +22,7 @@ const ChatButton = () => {
     {
       id: 2,
       name: "유저2",
+      opponentId: 102, // 상대방 ID 추가
       profileImage: "/user2.png",
       messages: [
         { sender: "유저2", content: "React 배우고 있어요!" },
@@ -38,7 +40,7 @@ const ChatButton = () => {
   };
 
   const selectChatRoom = (room) => {
-    setSelectedChat(room);
+    setSelectedChat(room); // 상대방 ID를 포함한 방 정보 저장
   };
 
   const handleSendMessage = (message) => {
@@ -65,7 +67,7 @@ const ChatButton = () => {
       {isOpen && !selectedChat && (
         <ChatRoomList
           chatRooms={chatRooms}
-          onSelectChatRoom={selectChatRoom}
+          onSelectChatRoom={(room) => setSelectedChat(room)}
           onClose={toggleChat}
         />
       )}

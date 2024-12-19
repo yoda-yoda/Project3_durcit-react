@@ -44,14 +44,14 @@ export const addEmoji = (postId, emoji) => {
   }
 };
 
-export const sendMessage = (roomId, senderId, opponentId, message) => {
+export const sendMessage = (roomId, senderId, targetNickname, message) => {
   if (stompClient && stompClient.connected) {
     stompClient.send(
       "/app/chat/send", // 서버의 MessageMapping 경로
       {},
-      JSON.stringify({ roomId, senderId, opponentId, message })
+      JSON.stringify({ roomId, senderId, targetNickname, message })
     );
-    console.log("Message sent:", { roomId, senderId, opponentId, message });
+    console.log("Message sent:", { roomId, senderId, targetNickname, message });
   } else {
     console.error("WebSocket is not connected");
   }
