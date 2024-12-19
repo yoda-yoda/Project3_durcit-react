@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import MainFeedTopBar from "../components/MainFeedTopbar";
 import { useNavigate } from "react-router-dom";
 
@@ -7,53 +8,59 @@ const MainFeed = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
-  const PAGE_SIZE = 5; // 한 번에 가져올 게시물 개수
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 5;
 
   const navigate = useNavigate();
 
-  // 더미 데이터 생성 (실제로는 API 요청)
-  const mockFetchPosts = (page) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const newPosts = Array.from({ length: PAGE_SIZE }, (_, index) => {
-          const id = (page - 1) * PAGE_SIZE + index + 1;
-          setPage(page + 1);
-          return {
-            id,
-            author: {
-              name: `Author ${id}`,
-              profileImage: "https://via.placeholder.com/50",
-            },
-            createdAt: `${id} hours ago`,
-            title: `Post Title ${id}`,
-            content: `Post content ${id}`,
-            views: id * 10,
-            comments: id * 5,
-            thumbnail: id % 2 === 0 ? "https://via.placeholder.com/150" : null,
-          };
-        });
-        resolve(newPosts);
-      }, 1000); // 1초 딜레이
-    });
+  // API 호출 함수
+  const fetchPosts = async (page, category) => {
+    console.log("Fetching posts for page:", page);
+    try {
+      const response = await axios.get("http://localhost:8080/api/posts/pages", {
+        params: {
+          page,
+          size: PAGE_SIZE,
+          category: category || "All",
+        },
+      });
+      console.log(response.data);
+      return response.data.data.content; // Spring Data Page 객체의 content
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      return [];
+    }
   };
 
-  // 데이터 로드 함수
   const loadMorePosts = async () => {
-    if (isLoading || !hasMore) return; // 로딩 중이거나 더 가져올 데이터가 없으면 중단
+    if (isLoading || !hasMore) return;
     setIsLoading(true);
 
-    const newPosts = await mockFetchPosts(page);
-
-    if (newPosts.length > 0) {
-      setPosts((prev) => [...prev, ...newPosts]);
-      setPage((prev) => prev + 1);
-    } else {
-      setHasMore(false); // 더 이상 데이터가 없음을 표시
+    try {
+      const newPosts = await fetchPosts(page, selectedOption); // 현재 페이지 요청
+      if (newPosts.length > 0) {
+        setPosts((prev) => {
+          const mergedPosts = [...prev, ...newPosts];
+          const uniquePosts = mergedPosts.filter(
+            (post, index, self) => self.findIndex((p) => p.id === post.id) === index
+          );
+          return uniquePosts;
+        });
+        setPage((prevPage) => prevPage + 1); // 페이지 증가
+        if (newPosts.length < PAGE_SIZE) {
+          setHasMore(false); // 데이터가 더 이상 없으면 중단
+        }
+      } else {
+        setHasMore(false); // 데이터가 더 이상 없으면 중단
+      }
+    } catch (error) {
+      console.error("Error loading posts:", error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
+
+
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
@@ -65,15 +72,40 @@ const MainFeed = () => {
     }
   };
 
-  // 컴포넌트 마운트 시 스크롤 이벤트 등록
   useEffect(() => {
+    // 선택된 옵션이 변경되면 상태 초기화
+    setPosts([]);
+    setPage(0);
+    setHasMore(true);
+  }, [selectedOption]); // 선택 옵션이 변경될 때마다 실행
+
+  useEffect(() => {
+    // 초기 데이터 로드 및 스크롤 이벤트 등록
     loadMorePosts(); // 첫 페이지 데이터 로드
+
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 100
+      ) {
+        loadMorePosts();
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [loadMorePosts]); // loadMorePosts 함수에 의존
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
+    setPosts([]); // 이전 게시물 초기화
+    setPage(0); // 페이지 번호 초기화
+    setHasMore(true); // 데이터 더 가져올 수 있음
+
+    // 상태 초기화 후 데이터 요청
+    setTimeout(() => {
+      loadMorePosts();
+    }, 0); // 비동기 상태 업데이트 후 실행
   };
 
   return (
@@ -105,12 +137,12 @@ const MainFeed = () => {
             <div className="flex-1">
               <div className="flex items-center mb-4">
                 <img
-                  src={post.author.profileImage}
-                  alt={`${post.author.name} profile`}
+                  src={post.userThumbnail || "https://via.placeholder.com/50"}
+                  alt={`${post.author} profile`}
                   className="w-10 h-10 rounded-full mr-3"
                 />
                 <div>
-                  <div className="font-semibold">{post.author.name}</div>
+                  <div className="font-semibold">{post.author}</div>
                   <div className="text-gray-500 text-sm">{post.createdAt}</div>
                 </div>
               </div>
@@ -118,14 +150,14 @@ const MainFeed = () => {
               <p className="text-gray-700 truncate">{post.content}</p>
               <div className="flex items-center text-gray-500 text-sm mt-2">
                 <span className="mr-4">{post.views} views</span>
-                <span>{post.comments} comments</span>
+                <span>{post.commentCount} comments</span>
               </div>
             </div>
 
             {/* 오른쪽: 썸네일 */}
-            {post.thumbnail && (
+            {post.postThumbnail && (
               <img
-                src={post.thumbnail}
+                src={post.postThumbnail}
                 alt={`${post.title} thumbnail`}
                 className="w-48 h-36 rounded ml-4 object-cover"
               />
@@ -145,7 +177,6 @@ const MainFeed = () => {
       {!isLoading && !hasMore && (
         <div className="text-center text-gray-500 my-6">No more posts</div>
       )}
-
     </div>
   );
 };

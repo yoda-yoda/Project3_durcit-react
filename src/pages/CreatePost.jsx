@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate import
+import apiClient from "../utils/apiClient";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -7,6 +9,10 @@ const CreatePost = () => {
   const [newTag, setNewTag] = useState("");
   const [attachments, setAttachments] = useState([]); // Multiple files
   const [activeTab, setActiveTab] = useState("body"); // 'body', 'media', 'tags'
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate(); // useNavigate 초기화
 
   const handleAddTag = () => {
     if (newTag.trim()) {
@@ -34,10 +40,53 @@ const CreatePost = () => {
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Post created with title: "${title}" and content: "${content}"`);
-    // Add actual logic for creating the post
+
+    if (!title || !content) {
+      setError("Title and content are required.");
+      return;
+    }
+
+    const postRegisterCombinedRequest = {
+      postRegisterRequest: {
+        title,
+        content,
+      },
+      postsTagRegisterRequest: tags.map((tag) => ({ contents: tag })),
+    };
+
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      // 포스트 생성 요청
+      const response = await apiClient.post("/posts", postRegisterCombinedRequest);
+
+      if (response.status === 201) {
+        const postId = response.data.data; // 백엔드에서 생성된 포스트 ID 반환
+        setSuccess(true);
+        console.log(postId);
+
+        // 파일 업로드 요청
+        if (attachments.length > 0) {
+          const formData = new FormData();
+          formData.append("postId", postId); // postId를 문자열로 변환
+          attachments.forEach((file) => formData.append("files", file));
+          console.log(formData);
+          await apiClient.post("/upload/files", formData);
+        }
+
+        // 메인 페이지로 이동
+        navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to create the post. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -87,7 +136,6 @@ const CreatePost = () => {
           placeholder="Enter your title"
           className="w-full px-4 py-2 rounded shadow bg-gray-50 text-gray-700 mb-4"
         />
-
 
         {/* Active Tab Content */}
         {activeTab === "body" && (
@@ -170,13 +218,22 @@ const CreatePost = () => {
           </div>
         )}
 
+        {/* Error Message */}
+        {error && <p className="text-red-500 mb-2">{error}</p>}
+
+        {/* Success Message */}
+        {success && <p className="text-green-500 mb-2">Post created successfully!</p>}
+
         {/* Submit Button */}
         <div className="flex justify-end py-2">
           <button
             onClick={handleSubmit}
-            className="px-6 py-2 bg-gray-500 text-white rounded-full shadow hover:bg-gray-600"
+            className={`px-6 py-2 rounded-full shadow text-white ${
+              loading ? "bg-gray-400" : "bg-gray-500 hover:bg-gray-600"
+            }`}
+            disabled={loading}
           >
-            Create Post
+            {loading ? "Creating..." : "Create Post"}
           </button>
         </div>
       </div>
