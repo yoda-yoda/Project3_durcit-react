@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import EmojiPicker from "emoji-picker-react";
 import { connectWebSocket, addEmoji, disconnectWebSocket } from "../utils/webSocket";
 import apiClient from "../utils/apiClient";
+import { checkAuth } from "../utils/authUtils";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -68,6 +69,8 @@ const PostDetail = () => {
 
 
   const handleLike = async () => {
+    if (!checkAuth()) return;
+
     try {
       // POST 요청으로 좋아요 상태 토글
       const response = await apiClient.post(`/likes/${postId}/toggle`);
@@ -84,6 +87,7 @@ const PostDetail = () => {
   };
 
   const handleReaction = (emoji) => {
+    if (!checkAuth()) return;
     if (!emoji) {
       console.error("Cannot add reaction: Emoji is undefined!");
       return;
