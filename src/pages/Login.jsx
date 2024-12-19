@@ -27,6 +27,7 @@ const Login = ({ isOpen, onClose }) => {
             dispatch(setTokens({ accessToken, refreshToken }));
 
             onClose(); // Close the modal after successful login
+            window.location.reload();
             navigate("/"); // Navigate to the main page
         } catch (err) {
             console.error("로그인 실패:", err);

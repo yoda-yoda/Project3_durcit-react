@@ -1,20 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileHoverCard from "./ProfileHoverCard";
+import apiClient from "../../utils/apiClient";
 
 const FollowingTab = () => {
-  // 모킹 데이터
-  const following = [
-    { id: 1, profileImage: "/cute3.png", username: "user789", nickname: "User Three" },
-    { id: 2, profileImage: "/cute4.png", username: "user101", nickname: "User Four" },
-  ];
+  const [following, setFollowing] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleFollow = (username) => {
-    alert(`${username}님을 팔로우 취소했습니다.`);
-  };
+  useEffect(() => {
+    const fetchFollowing = async () => {
+      try {
+        const response = await apiClient.get("/follows/followees", {
+          params: { followerId: localStorage.getItem("memberId") }, // Replace with dynamic followerId if needed
+        });
+        setFollowing(response.data.data);
+      } catch (err) {
+        setError("Failed to load following list. Please try again later.");
+        console.error("Error fetching following list:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleNewChat = (username) => {
-    alert(`${username}님과 새 채팅을 시작합니다.`);
-  };
+    fetchFollowing();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center mt-6">Loading following list...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-6 text-red-600">{error}</div>;
+  }
+
+  if (following.length === 0) {
+    return <div className="text-center mt-6 text-gray-600">팔로우 중인 사람이 없습니다.</div>;
+  }
 
   return (
     <div className="text-left mt-6 space-y-4">
@@ -22,12 +43,12 @@ const FollowingTab = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {following.map((follow) => (
           <ProfileHoverCard
-            key={follow.id}
-            profileImage={follow.profileImage}
+            key={follow.memberId}
+            profileImage={follow.profileImage || "/default-avatar.png"}
             username={follow.username}
-            nickname={follow.nickname}
-            onFollow={() => handleFollow(follow.username)}
-            onChat={() => handleNewChat(follow.username)}
+            nickname={follow.nickname || follow.username}
+            onFollow={() => alert(`${follow.username}님을 팔로우 취소했습니다.`)}
+            onChat={() => alert(`${follow.username}님과 새 채팅을 시작합니다.`)}
           />
         ))}
       </div>

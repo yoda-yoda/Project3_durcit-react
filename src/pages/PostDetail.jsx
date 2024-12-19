@@ -19,6 +19,7 @@ const PostDetail = () => {
   const [mentions, setMentions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     // Fetch post details
@@ -37,6 +38,7 @@ const PostDetail = () => {
       const response = await fetch(`http://localhost:8080/api/posts/${postId}`);
       const data = await response.json();
       setPost(data.data);
+      setTags(data.data.tags);
       setLikes(data.data.post.likes);
       setReactions(data.data.emojis.emojis.reduce((acc, emoji) => {
         acc[emoji.emoji] = emoji.count;
@@ -51,15 +53,15 @@ const PostDetail = () => {
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
 
+    // 서버에서 받은 새로운 상태로 reactions 업데이트
     if (!emojis || emojis.length === 0) {
-      // 이모지가 없는 경우 reactions를 초기화
       setReactions({});
       return;
     }
 
-    // 서버에서 전달된 최신 이모지 데이터를 기반으로 reactions를 업데이트
-    const newReactions = emojis.reduce((acc, emoji) => {
-      acc[emoji.emoji] = emoji.count;
+    // 새로운 이모지 상태 적용
+    const newReactions = emojis.reduce((acc, { emoji, count }) => {
+      acc[emoji] = count;
       return acc;
     }, {});
 
@@ -200,6 +202,24 @@ const PostDetail = () => {
           </div>
           <p className="text-gray-700">{post.post.content}</p>
         </div>
+
+
+        {/* 태그 섹션 */}
+        {tags.length > 0 && (
+          <div className="mt-4">
+            <strong>Tags</strong>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="px-2 py-1 bg-gray-200 rounded-full text-gray-700 font-semibold text-sm"
+                >
+                    #{tag.contents}
+                  </span>
+              ))}
+            </div>
+          </div>
+        )}
 
 
         <div className="flex items-center gap-4 mt-4">

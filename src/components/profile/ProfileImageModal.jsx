@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import apiClient from "../../utils/apiClient";
 
 const ProfileImageModal = ({ onClose }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -10,9 +11,24 @@ const ProfileImageModal = ({ onClose }) => {
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = () => {
-    alert("프로필 사진이 변경되었습니다!");
-    onClose();
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      alert("파일을 선택해주세요.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await apiClient.put("/profile", formData);
+      alert("프로필 사진이 성공적으로 변경되었습니다!");
+      onClose();
+      window.location.reload();
+    } catch (error) {
+      console.error("프로필 사진 변경 중 오류 발생:", error);
+      alert("프로필 사진 변경 중 오류가 발생했습니다.");
+    }
   };
 
   return (
