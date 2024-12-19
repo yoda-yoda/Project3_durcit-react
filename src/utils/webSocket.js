@@ -13,7 +13,7 @@ export const connectWebSocket = (onMessage) => {
     console.log("WebSocket Connected via SockJS");
 
     // 이모지 업데이트 이벤트 구독
-    stompClient.subscribe("/topic/emojiUpdate", (message) => {
+    stompClient.subscribe("/topic/emoji", (message) => {
       const data = JSON.parse(message.body);
       console.log("Emoji Update:", data);
       if (onMessage) onMessage(data);
@@ -25,10 +25,12 @@ export const connectWebSocket = (onMessage) => {
 
 export const addEmoji = (postId, emoji) => {
   if (stompClient && stompClient.connected) {
+    const memberId = localStorage.getItem("memberId");
+    console.log(postId, emoji, memberId);
     stompClient.send(
       "/app/addEmoji", // 서버의 MessageMapping 경로
       {},
-      JSON.stringify({ postId, emoji })
+      JSON.stringify({ postId, emoji, memberId })
     );
   } else {
     console.error("WebSocket is not connected");

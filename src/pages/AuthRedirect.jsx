@@ -15,14 +15,17 @@ const AuthRedirect = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const accessToken = urlParams.get('access');
       const refreshToken = urlParams.get('refresh');
+      const memberId = urlParams.get('memberId');
 
       console.log(accessToken);
       console.log(refreshToken);
+      console.log(memberId);
 
       if (accessToken && refreshToken) {
         console.log('왜 없는데');
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('memberId', memberId);
         dispatch(setTokens({ accessToken, refreshToken }));
         navigate('/', { replace: true });
       } else {
