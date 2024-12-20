@@ -5,7 +5,7 @@ const socketUrl = "http://localhost:8080/ws"; // WebSocket 서버 URL
 
 let stompClient = null;
 
-export const connectWebSocket = (onMessage, userId) => {
+export const connectWebSocket = (onMessage, roomId) => {
   const socket = new SockJS(socketUrl); // SockJS를 사용하여 WebSocket 생성
   stompClient = Stomp.over(socket);
 
@@ -19,10 +19,9 @@ export const connectWebSocket = (onMessage, userId) => {
       if (onMessage) onMessage(data);
     });
 
-    // 개인 메시지 수신 구독 (1:1 채팅)
-    stompClient.subscribe(`/user/${userId}/queue/messages`, (message) => {
+    stompClient.subscribe(`/topic/chat/${roomId}`, (message) => {
       const data = JSON.parse(message.body);
-      console.log("Private Message:", data);
+      console.log("Message for room:", roomId, data);
       if (onMessage) onMessage(data);
     });
   }, (error) => {

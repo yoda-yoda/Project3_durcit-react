@@ -8,6 +8,7 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    console.log("Messages updated:", messages);
     const memberId = localStorage.getItem("memberId");
     console.log(selectedChat)
 
@@ -29,7 +30,9 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
     };
 
     fetchMessages();
-    connectWebSocket(handleIncomingMessage, memberId);
+
+    connectWebSocket(handleIncomingMessage, selectedChat.roomId);
+
 
     return () => {
       disconnectWebSocket();
