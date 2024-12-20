@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Login from "../pages/Login";
 import axios from "axios";
+import NotificationModal from "./NotificationModal";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
@@ -108,23 +109,7 @@ const TopBar = () => {
               >
                   🔔
               </button>
-              {isNotificationOpen && (
-                <div className="absolute right-16 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-64 z-50">
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">알림</h3>
-                        <ul className="space-y-2">
-                            <li>게시물에 댓글이 달렸습니다</li>
-                            <li>새로운 팔로워 1명</li>
-                        </ul>
-                        <button
-                          className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
-                          onClick={toggleNotification}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-              )}
+              <NotificationModal isOpen={isNotificationOpen} onClose={toggleNotification} />
 
               {/* 메시지 버튼 */}
               <button
