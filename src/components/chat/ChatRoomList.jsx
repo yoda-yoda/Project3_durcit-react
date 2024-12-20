@@ -20,7 +20,8 @@ const ChatRoomList = ({ onSelectChatRoom, onClose }) => {
           },
         });
 
-        const rooms = response.data.data; // 응답 데이터에서 'data'를 가져옴
+        const rooms = response.data.data;
+        console.log(rooms);
         setChatRooms(rooms);
       } catch (error) {
         console.error("채팅방 목록 불러오기 실패:", error);
@@ -29,6 +30,12 @@ const ChatRoomList = ({ onSelectChatRoom, onClose }) => {
 
     loadChatRooms();
   }, []);
+
+  const getNickname = (room, currentUserId) => {
+    return room.memberId != currentUserId
+      ? room.nickname
+      : room.targetNickname;
+  };
 
   return (
     <div className="fixed bottom-4 right-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
@@ -54,7 +61,7 @@ const ChatRoomList = ({ onSelectChatRoom, onClose }) => {
             >
               <p className="font-semibold text-gray-800">#{room.roomId}</p>
               <p className="text-sm text-gray-500">
-                대화 상대: {room.targetNickname}
+                대화 상대: {getNickname(room, localStorage.getItem("memberId"))}
               </p>
             </div>
           ))

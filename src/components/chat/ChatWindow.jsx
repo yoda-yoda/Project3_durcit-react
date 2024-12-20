@@ -52,6 +52,19 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
     setMessage("");
   };
 
+  const getNickname = (room, currentUserId) => {
+    return room.memberId != currentUserId
+      ? room.nickname
+      : room.targetNickname;
+  };
+
+  const getProfile = (room, currentUserId) => {
+    return room.memberId != currentUserId
+      ? room.memberProfile
+      : room.targetProfile;
+  }
+
+
   return (
     <div className="fixed bottom-4 right-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
       {/* Header */}
@@ -63,7 +76,7 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
           >
             <FaArrowLeft size={20} />
           </button>
-          <h3 className="text-lg font-semibold">{selectedChat.targetNickname}</h3>
+          <h3 className="text-lg font-semibold">{getNickname(selectedChat, localStorage.getItem("memberId"))}</h3>
         </div>
         <button
           onClick={onClose}
@@ -84,7 +97,7 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
           >
             {msg.senderId !== Number(localStorage.getItem("memberId")) && (
               <img
-                src={selectedChat.profileImage}
+                src={getProfile(selectedChat, localStorage.getItem("memberId"))}
                 alt={selectedChat.name}
                 className="w-8 h-8 rounded-full mr-2"
               />
