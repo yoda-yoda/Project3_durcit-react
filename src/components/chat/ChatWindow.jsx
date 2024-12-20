@@ -40,7 +40,7 @@ const ChatWindow = ({ selectedChat, onClose, onBack }) => {
     if (!message.trim()) return;
 
     const memberId = localStorage.getItem("memberId");
-    const targetNickname = selectedChat.targetNickname;
+    const targetNickname = selectedChat.memberId == localStorage.getItem("memberId") ? selectedChat.targetNickname : selectedChat.nickname;
     console.log(selectedChat.roomId, selectedChat.roomId);
 
     sendMessage(selectedChat.roomId, memberId, targetNickname, message);
