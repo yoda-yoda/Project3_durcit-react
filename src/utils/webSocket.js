@@ -4,20 +4,27 @@ import SockJS from "sockjs-client";
 const socketUrl = "http://localhost:8080/ws"; // WebSocket 서버 URL
 
 let stompClient = null;
-
-export const connectWebSocket = (onMessage, roomId) => {
-  const socket = new SockJS(socketUrl); // SockJS를 사용하여 WebSocket 생성
+export const connectWebSocketEmoji = (onMessage, postId) => {
+  const socket = new SockJS(socketUrl);
   stompClient = Stomp.over(socket);
 
   stompClient.connect({}, () => {
     console.log("WebSocket Connected via SockJS");
 
     // 이모지 업데이트 이벤트 구독
-    stompClient.subscribe("/topic/emoji", (message) => {
+    stompClient.subscribe(`/topic/emoji/${postId}`, (message) => {
       const data = JSON.parse(message.body);
-      console.log("Emoji Update:", data);
+      console.log(`Emoji Update for postId ${postId}:`, data);
       if (onMessage) onMessage(data);
     });
+  })
+}
+
+export const connectWebSocket = (onMessage, roomId) => {
+  const socket = new SockJS(socketUrl); // SockJS를 사용하여 WebSocket 생성
+  stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, () => {
 
     stompClient.subscribe(`/topic/chat/${roomId}`, (message) => {
       const data = JSON.parse(message.body);

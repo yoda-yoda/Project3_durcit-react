@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EmojiPicker from "emoji-picker-react";
-import { connectWebSocket, addEmoji, disconnectWebSocket } from "../utils/webSocket";
+import {connectWebSocket, addEmoji, disconnectWebSocket, connectWebSocketEmoji} from "../utils/webSocket";
 import apiClient from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
@@ -27,7 +27,7 @@ const PostDetail = () => {
     fetchPostDetails();
 
     // Connect WebSocket
-    connectWebSocket(handleEmojiUpdate);
+    connectWebSocketEmoji(handleEmojiUpdate, postId);
 
     return () => {
       disconnectWebSocket();
