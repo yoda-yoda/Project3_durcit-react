@@ -20,6 +20,21 @@ export const connectWebSocketEmoji = (onMessage, postId) => {
   })
 }
 
+export const connectWebSocketPush = (onMessage, userId) => {
+  const socket = new SockJS(socketUrl);
+  stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, () => {
+    console.log("WebSocket Connected via SockJS");
+
+    stompClient.subscribe(`/topic/notification/${userId}`, (message) => {
+      const data = JSON.parse(message.body);
+      console.log(`Received messages userId, ${userId}:`, data);
+      if (onMessage) onMessage(data);
+    });
+  })
+}
+
 export const connectWebSocket = (onMessage, roomId) => {
   const socket = new SockJS(socketUrl); // SockJS를 사용하여 WebSocket 생성
   stompClient = Stomp.over(socket);
@@ -29,6 +44,11 @@ export const connectWebSocket = (onMessage, roomId) => {
     stompClient.subscribe(`/topic/chat/${roomId}`, (message) => {
       const data = JSON.parse(message.body);
       console.log("Message for room:", roomId, data);
+      const localMemberId = localStorage.getItem("memberId");
+      if (data.senderId === localMemberId) {
+        console.log("Skipping message from self:", data);
+        return;
+      }
       if (onMessage) onMessage(data);
     });
   }, (error) => {

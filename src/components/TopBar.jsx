@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
+import { connectWebSocketPush, disconnectWebSocket } from "../utils/webSocket";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
@@ -11,6 +12,7 @@ const TopBar = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
     const [isLoginOpen, setLoginOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [notifications, setNotifications] = useState([]);
     const navigate = useNavigate();
 
     const updateLoginState = () => {
@@ -33,6 +35,21 @@ const TopBar = () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            const userId = localStorage.getItem("memberId");
+            const handleIncomingNotification = (message) => {
+                setNotifications((prev) => [...prev, message]);
+            };
+
+            connectWebSocketPush(handleIncomingNotification, `${userId}`);
+
+            return () => {
+                disconnectWebSocket();
+            };
+        }
+    }, [isLoggedIn]);
 
     const handleLogout = async () => {
         try {
@@ -109,7 +126,11 @@ const TopBar = () => {
               >
                   🔔
               </button>
-              <NotificationModal isOpen={isNotificationOpen} onClose={toggleNotification} />
+              <NotificationModal
+                isOpen={isNotificationOpen}
+                notifications={notifications}
+                onClose={toggleNotification}
+              />
 
               {/* 메시지 버튼 */}
               <button

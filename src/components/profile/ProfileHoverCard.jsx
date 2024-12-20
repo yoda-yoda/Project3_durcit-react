@@ -1,10 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import apiClient from "../../utils/apiClient";
 
 const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMemberId }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const defaultImage = "/default-avatar.png"; // 대체 이미지 경로
+
+  useEffect(() => {
+    // 팔로우 상태 확인 API 호출
+    const fetchFollowStatus = async () => {
+      try {
+        const response = await apiClient.get(`/follows`, {
+          params: { followeeId: targetMemberId },
+        });
+        setIsFollowing(response.data.data); // API 응답에 따라 상태 설정
+      } catch (error) {
+        console.error("Failed to fetch follow status.", error);
+      }
+    };
+
+    fetchFollowStatus();
+  }, [targetMemberId]);
+
+  const handleFollowToggle = async () => {
+    try {
+      await apiClient.post("/follows/toggle", { followeeId: targetMemberId });
+      setIsFollowing(!isFollowing); // 상태를 토글
+      alert(`팔로우 상태가 ${!isFollowing ? "팔로우" : "언팔로우"}로 변경되었습니다.`);
+    } catch (error) {
+      console.error("Failed to toggle follow.", error);
+      alert("팔로우 상태 변경에 실패했습니다.");
+    }
+  };
 
   const handleNewChat = async () => {
     try {
@@ -20,7 +48,6 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
       alert("채팅방 생성에 실패했습니다.");
     }
   };
-
 
   return (
     <div
@@ -54,10 +81,12 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
           {/* 버튼들 */}
           <div className="flex justify-end space-x-2">
             <button
-              onClick={onFollow}
-              className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition"
+              onClick={handleFollowToggle}
+              className={`px-4 py-2 text-white text-sm rounded transition ${
+                isFollowing ? "bg-blue-500 hover:bg-blue-600" : "bg-red-500 hover:bg-red-600"
+              }`}
             >
-              Follow
+              {isFollowing ? "Unfollow" : "Follow"}
             </button>
             <button
               onClick={handleNewChat}

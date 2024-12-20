@@ -1,6 +1,6 @@
 import React from "react";
 
-const NotificationModal = ({ isOpen, onClose }) => {
+const NotificationModal = ({ isOpen, notifications, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -8,8 +8,9 @@ const NotificationModal = ({ isOpen, onClose }) => {
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-2">알림</h3>
         <ul className="space-y-2">
-          <li>게시물에 댓글이 달렸습니다</li>
-          <li>새로운 팔로워 1명</li>
+          {notifications.map((notification, index) => (
+            <li key={index}>{notification}</li>
+          ))}
         </ul>
         <button
           className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
