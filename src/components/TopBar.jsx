@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
 import { connectWebSocketPush, disconnectWebSocket } from "../utils/webSocket";
+import apiClient from "../utils/apiClient";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
@@ -14,17 +15,34 @@ const TopBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const navigate = useNavigate();
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+        // 확인되지 않은 알림의 개수 계산
+        const count = notifications.filter(notification => !notification.confirmed).length;
+        setUnreadCount(count);
+    }, [notifications]);
 
     const updateLoginState = () => {
         const token = localStorage.getItem("accessToken");
         setIsLoggedIn(!!token); // 토큰이 존재하면 로그인 상태로 설정
     };
 
+    const fetchPushNotifications = async () => {
+        try {
+            const memberId = localStorage.getItem("memberId");
+            const response = await apiClient.get(`http://localhost:8080/api/members/pushs`, {
+                params: { memberId },
+            });
+            setNotifications(response.data.data || []);
+        } catch (error) {
+            console.error("Failed to fetch push notifications:", error);
+        }
+    };
+
     useEffect(() => {
-        // 초기 상태 설정
         updateLoginState();
 
-        // localStorage 변경 감지
         const handleStorageChange = () => {
             updateLoginState();
         };
@@ -40,7 +58,7 @@ const TopBar = () => {
         if (isLoggedIn) {
             const userId = localStorage.getItem("memberId");
             const handleIncomingNotification = (message) => {
-                setNotifications((prev) => [...prev, message]);
+                setNotifications((prev) => [message, ...prev]);
             };
 
             connectWebSocketPush(handleIncomingNotification, `${userId}`);
@@ -126,54 +144,18 @@ const TopBar = () => {
               >
                   🔔
               </button>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -left-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                    {unreadCount}
+                </span>
+              )}
               <NotificationModal
                 isOpen={isNotificationOpen}
                 notifications={notifications}
+                setNotifications={setNotifications}
                 onClose={toggleNotification}
+                fetchNotifications={fetchPushNotifications}
               />
-
-              {/* 메시지 버튼 */}
-              <button
-                className="text-blue-500 text-xl hover:text-blue-600 focus:outline-none"
-                onClick={toggleMessage}
-              >
-                  💬
-              </button>
-              {isMessageOpen && (
-                <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50">
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">Chats</h3>
-                        <ul className="space-y-2">
-                            <li>
-                                <div className="flex items-center space-x-2">
-                                    <img
-                                      src="/cute.png"
-                                      alt="User Avatar"
-                                      className="w-8 h-8 rounded-full"
-                                    />
-                                    <span>Chat with User123</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="flex items-center space-x-2">
-                                    <img
-                                      src="/cute1.png"
-                                      alt="User Avatar"
-                                      className="w-8 h-8 rounded-full"
-                                    />
-                                    <span>Chat with User456</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <button
-                          className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-500"
-                          onClick={toggleMessage}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-              )}
 
               {/* 로그인 버튼 */}
               <div>
@@ -199,45 +181,45 @@ const TopBar = () => {
               {/* Login Modal */}
               <Login isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
 
-              {/* ... 버튼 */}
-              <div className="relative">
-                  <button
-                    className="bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-300 transition duration-300"
-                    onClick={toggleDropdown}
-                  >
-                      ...
-                  </button>
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                        <ul className="p-2 space-y-2">
-                            <li>
-                                <Link
-                                  to="/profile"
-                                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                >
-                                    <span role="img" aria-label="profile">👤</span> Profile
-                                </Link>
-                            </li>
-                            <li>
-                                <a
-                                  href="#"
-                                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                >
-                                    <span role="img" aria-label="settings">⚙️</span> Settings
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                  href="#"
-                                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"
-                                >
-                                    <span role="img" aria-label="logout">🚪</span> Log Out
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                  )}
-              </div>
+              {/*/!* ... 버튼 *!/*/}
+              {/*<div className="relative">*/}
+              {/*    <button*/}
+              {/*      className="bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-300 transition duration-300"*/}
+              {/*      onClick={toggleDropdown}*/}
+              {/*    >*/}
+              {/*        ...*/}
+              {/*    </button>*/}
+              {/*    {isDropdownOpen && (*/}
+              {/*      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">*/}
+              {/*          <ul className="p-2 space-y-2">*/}
+              {/*              <li>*/}
+              {/*                  <Link*/}
+              {/*                    to="/profile"*/}
+              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
+              {/*                  >*/}
+              {/*                      <span role="img" aria-label="profile">👤</span> Profile*/}
+              {/*                  </Link>*/}
+              {/*              </li>*/}
+              {/*              <li>*/}
+              {/*                  <a*/}
+              {/*                    href="#"*/}
+              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
+              {/*                  >*/}
+              {/*                      <span role="img" aria-label="settings">⚙️</span> Settings*/}
+              {/*                  </a>*/}
+              {/*              </li>*/}
+              {/*              <li>*/}
+              {/*                  <a*/}
+              {/*                    href="#"*/}
+              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
+              {/*                  >*/}
+              {/*                      <span role="img" aria-label="logout">🚪</span> Log Out*/}
+              {/*                  </a>*/}
+              {/*              </li>*/}
+              {/*          </ul>*/}
+              {/*      </div>*/}
+              {/*    )}*/}
+              {/*</div>*/}
           </div>
       </div>
     );

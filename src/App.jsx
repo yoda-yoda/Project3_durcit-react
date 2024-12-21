@@ -15,6 +15,9 @@ import EmailVerificationSuccess from "./pages/EmailVerificationSuccess";
 import RequestVerificationCode from "./pages/password/RequestVerificationCode";
 import ResetPassword from "./pages/password/ResetPassword";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   return (
     <Router>
@@ -39,6 +42,7 @@ const App = () => {
           </Routes>
         </div>
       </div>
+      <ToastContainer />
       <ChatButton />
     </Router>
   );

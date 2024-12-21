@@ -1,5 +1,6 @@
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { toast } from "react-toastify";
 
 const socketUrl = "http://localhost:8080/ws"; // WebSocket 서버 URL
 
@@ -30,6 +31,16 @@ export const connectWebSocketPush = (onMessage, userId) => {
     stompClient.subscribe(`/topic/notification/${userId}`, (message) => {
       const data = JSON.parse(message.body);
       console.log(`Received messages userId, ${userId}:`, data);
+      toast.info(data.message, {
+        position: "top-right",
+        autoClose: 5000, // 5초 후 자동 닫힘
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       if (onMessage) onMessage(data);
     });
   })
@@ -45,7 +56,7 @@ export const connectWebSocket = (onMessage, roomId) => {
       const data = JSON.parse(message.body);
       console.log("Message for room:", roomId, data);
       const localMemberId = localStorage.getItem("memberId");
-      if (data.senderId === localMemberId) {
+      if (data.senderId == localMemberId) {
         console.log("Skipping message from self:", data);
         return;
       }
