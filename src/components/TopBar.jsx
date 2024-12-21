@@ -5,15 +5,13 @@ import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
 import { useWebSocket } from "../context/WebSocketContext";
-import {disconnectWebSocket} from "../utils/webSocket";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
     const [isMessageOpen, setMessageOpen] = useState(false); // 메시지 모달 상태
     const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
     const [isLoginOpen, setLoginOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const { notifications, setNotifications } = useWebSocket();
+    const { notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout  } = useWebSocket();
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
 
@@ -22,33 +20,6 @@ const TopBar = () => {
         const count = notifications.filter(notification => !notification.confirmed).length;
         setUnreadCount(count);
     }, [notifications]);
-
-    const updateLoginState = () => {
-        const token = localStorage.getItem("accessToken");
-        setIsLoggedIn(!!token); // 토큰이 존재하면 로그인 상태로 설정
-    };
-
-    useEffect(() => {
-        updateLoginState();
-
-        const handleStorageChange = () => {
-            updateLoginState();
-        };
-
-        window.addEventListener("storage", handleStorageChange);
-
-        return () => {
-            window.removeEventListener("storage", handleStorageChange);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            return () => {
-                disconnectWebSocket();
-            };
-        }
-    }, [isLoggedIn]);
 
     const handleLogout = async () => {
         try {
@@ -68,16 +39,12 @@ const TopBar = () => {
                 localStorage.removeItem("memberId");
 
                 // 상태 업데이트 및 새로고침
-                updateLoginState();
+                logout();
                 navigate("/");
             }
         } catch (error) {
             console.error("Logout failed:", error);
-
-            // Clear tokens even if logout fails
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            updateLoginState();
+            localStorage.clear();
             navigate("/");
         }
     };

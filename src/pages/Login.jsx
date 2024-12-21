@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setTokens } from "../store/authSlice";
+import { useWebSocket } from "../context/WebSocketContext";
 
 const Login = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
@@ -10,6 +11,7 @@ const Login = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { setIsLoggedIn } = useWebSocket();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,7 +27,7 @@ const Login = ({ isOpen, onClose }) => {
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             dispatch(setTokens({ accessToken, refreshToken }));
-
+            setIsLoggedIn(true);
             onClose(); // Close the modal after successful login
             window.location.reload();
             navigate("/"); // Navigate to the main page

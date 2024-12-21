@@ -6,28 +6,35 @@ const WebSocketContext = createContext();
 export const WebSocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const memberId = localStorage.getItem("memberId");
+    if (isLoggedIn) {
+      const memberId = localStorage.getItem("memberId");
 
-    if (memberId) {
-      const handleIncomingNotification = (message) => {
-        setNotifications((prev) => [message, ...prev]);
-      };
+      if (memberId) {
+        const handleIncomingNotification = (message) => {
+          setNotifications((prev) => [message, ...prev]);
+        };
 
-      connectWebSocketPush(handleIncomingNotification, memberId);
+        connectWebSocketPush(handleIncomingNotification, memberId);
 
-      setIsConnected(true);
-
-      return () => {
-        disconnectWebSocket();
-        setIsConnected(false);
-      };
+        return () => {
+          disconnectWebSocket();
+        };
+      }
     }
-  }, []);
+  }, [isLoggedIn]);
+
+  const logout = () => {
+    disconnectWebSocket();
+    setNotifications([]);
+    setIsLoggedIn(false);
+    localStorage.clear();
+  };
 
   return (
-    <WebSocketContext.Provider value={{ isConnected, notifications }}>
+    <WebSocketContext.Provider value={{ notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout }}>
       {children}
     </WebSocketContext.Provider>
   );
