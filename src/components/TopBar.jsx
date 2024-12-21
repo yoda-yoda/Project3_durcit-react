@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
-import { connectWebSocketPush, disconnectWebSocket } from "../utils/webSocket";
-import apiClient from "../utils/apiClient";
+import { useWebSocket } from "../context/WebSocketContext";
+import {disconnectWebSocket} from "../utils/webSocket";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
@@ -13,7 +13,7 @@ const TopBar = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
     const [isLoginOpen, setLoginOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [notifications, setNotifications] = useState([]);
+    const { notifications, setNotifications } = useWebSocket();
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
 
@@ -26,18 +26,6 @@ const TopBar = () => {
     const updateLoginState = () => {
         const token = localStorage.getItem("accessToken");
         setIsLoggedIn(!!token); // 토큰이 존재하면 로그인 상태로 설정
-    };
-
-    const fetchPushNotifications = async () => {
-        try {
-            const memberId = localStorage.getItem("memberId");
-            const response = await apiClient.get(`http://localhost:8080/api/members/pushs`, {
-                params: { memberId },
-            });
-            setNotifications(response.data.data || []);
-        } catch (error) {
-            console.error("Failed to fetch push notifications:", error);
-        }
     };
 
     useEffect(() => {
@@ -56,13 +44,6 @@ const TopBar = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            const userId = localStorage.getItem("memberId");
-            const handleIncomingNotification = (message) => {
-                setNotifications((prev) => [message, ...prev]);
-            };
-
-            connectWebSocketPush(handleIncomingNotification, `${userId}`);
-
             return () => {
                 disconnectWebSocket();
             };
@@ -154,7 +135,6 @@ const TopBar = () => {
                 notifications={notifications}
                 setNotifications={setNotifications}
                 onClose={toggleNotification}
-                fetchNotifications={fetchPushNotifications}
               />
 
               {/* 로그인 버튼 */}

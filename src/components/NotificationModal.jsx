@@ -1,21 +1,41 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../utils/apiClient";
 
-const NotificationModal = ({ isOpen, notifications, setNotifications, onClose, fetchNotifications }) => {
+const NotificationModal = ({ isOpen, notifications, setNotifications, onClose }) => {
   const [hasFetched, setHasFetched] = useState(false);
   const navigate = useNavigate();
 
+  const fetchNotifications = useCallback(async () => {
+    const memberId = localStorage.getItem("memberId");
+    try {
+      console.log("Fetching notifications...");
+      const response = await apiClient.get(`/pushs`, {
+        params: { memberId },
+      });
+      setNotifications(response.data.data || []);
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
+  }, [setNotifications]);
+
   useEffect(() => {
-    if (isOpen && !hasFetched) {
+    if (!hasFetched) {
+      console.log("Reloading notifications...");
       fetchNotifications();
       setHasFetched(true);
     }
   }, [isOpen, hasFetched, fetchNotifications]);
 
+  const handleClose = () => {
+    setHasFetched(false);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const handleNotificationClick = async (postId, confirmed, pushId) => {
+    console.log(postId);
     if (!confirmed) {
       try {
         await apiClient.put(`/pushs/${pushId}/confirm`);
@@ -63,7 +83,7 @@ const NotificationModal = ({ isOpen, notifications, setNotifications, onClose, f
         </ul>
         <button
           className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-          onClick={onClose}
+          onClick={handleClose}
         >
           Close
         </button>
