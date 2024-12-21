@@ -5,19 +5,38 @@ import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
 import { useWebSocket } from "../context/WebSocketContext";
+import apiClient from "../utils/apiClient";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
-    const [isMessageOpen, setMessageOpen] = useState(false); // 메시지 모달 상태
-    const [isDropdownOpen, setDropdownOpen] = useState(false); // 드롭다운 상태
     const [isLoginOpen, setLoginOpen] = useState(false);
-    const { notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout  } = useWebSocket();
+    const { notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout } = useWebSocket();
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
 
+    // 알림 데이터를 가져오는 로직
+    const fetchNotifications = async () => {
+        const memberId = localStorage.getItem("memberId");
+        if (!memberId) return;
+
+        try {
+            const response = await apiClient.get("/pushs", {
+                params: { memberId },
+            });
+            setNotifications(response.data.data || []);
+        } catch (error) {
+            console.error("Failed to fetch notifications:", error);
+        }
+    };
+
     useEffect(() => {
-        // 확인되지 않은 알림의 개수 계산
-        const count = notifications.filter(notification => !notification.confirmed).length;
+        if (isLoggedIn) {
+            fetchNotifications();
+        }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        const count = notifications.filter((notification) => !notification.confirmed).length;
         setUnreadCount(count);
     }, [notifications]);
 
@@ -26,19 +45,16 @@ const TopBar = () => {
             const refreshToken = localStorage.getItem("refreshToken");
             const memberId = localStorage.getItem("memberId");
 
-            // Send logout request to backend
             if (refreshToken) {
                 await axios.post("http://localhost:8080/auth/logout", {
                     refreshToken,
                     memberId,
                 });
 
-                // Clear tokens from localStorage
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
                 localStorage.removeItem("memberId");
 
-                // 상태 업데이트 및 새로고침
                 logout();
                 navigate("/");
             }
@@ -50,21 +66,29 @@ const TopBar = () => {
     };
 
     const toggleNotification = () => {
+        fetchNotifications();
         setNotificationOpen(!isNotificationOpen);
-        setMessageOpen(false); // 메시지 창 닫기
-        setDropdownOpen(false); // 드롭다운 창 닫기
     };
 
-    const toggleMessage = () => {
-        setMessageOpen(!isMessageOpen);
-        setNotificationOpen(false); // 알림 창 닫기
-        setDropdownOpen(false); // 드롭다운 창 닫기
-    };
+    const handleNotificationClick = async (notification) => {
+        if (!notification.confirmed) {
+            try {
+                await apiClient().put(`/pushs/${notification.id}/confirm`);
+                setNotifications((prev) =>
+                  prev.map((notif) =>
+                    notif.id === notification.id
+                      ? { ...notif, confirmed: true }
+                      : notif
+                  )
+                );
+            } catch (error) {
+                console.error("Failed to confirm notification:", error);
+            }
+        }
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!isDropdownOpen);
-        setNotificationOpen(false); // 알림 창 닫기
-        setMessageOpen(false); // 메시지 창 닫기
+        if (notification.postId) {
+            navigate(`/posts/${notification.postId}`);
+        }
     };
 
     return (
@@ -100,14 +124,13 @@ const TopBar = () => {
               <NotificationModal
                 isOpen={isNotificationOpen}
                 notifications={notifications}
-                setNotifications={setNotifications}
                 onClose={toggleNotification}
+                onNotificationClick={handleNotificationClick}
               />
 
               {/* 로그인 버튼 */}
               <div>
                   {isLoggedIn ? (
-                    // Logout button
                     <button
                       onClick={handleLogout}
                       className="bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300"
@@ -115,7 +138,6 @@ const TopBar = () => {
                         Logout
                     </button>
                   ) : (
-                    // Login button
                     <button
                       onClick={() => setLoginOpen(true)}
                       className="bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300"
@@ -125,48 +147,7 @@ const TopBar = () => {
                   )}
               </div>
 
-              {/* Login Modal */}
               <Login isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
-
-              {/*/!* ... 버튼 *!/*/}
-              {/*<div className="relative">*/}
-              {/*    <button*/}
-              {/*      className="bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-300 transition duration-300"*/}
-              {/*      onClick={toggleDropdown}*/}
-              {/*    >*/}
-              {/*        ...*/}
-              {/*    </button>*/}
-              {/*    {isDropdownOpen && (*/}
-              {/*      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">*/}
-              {/*          <ul className="p-2 space-y-2">*/}
-              {/*              <li>*/}
-              {/*                  <Link*/}
-              {/*                    to="/profile"*/}
-              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
-              {/*                  >*/}
-              {/*                      <span role="img" aria-label="profile">👤</span> Profile*/}
-              {/*                  </Link>*/}
-              {/*              </li>*/}
-              {/*              <li>*/}
-              {/*                  <a*/}
-              {/*                    href="#"*/}
-              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
-              {/*                  >*/}
-              {/*                      <span role="img" aria-label="settings">⚙️</span> Settings*/}
-              {/*                  </a>*/}
-              {/*              </li>*/}
-              {/*              <li>*/}
-              {/*                  <a*/}
-              {/*                    href="#"*/}
-              {/*                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded"*/}
-              {/*                  >*/}
-              {/*                      <span role="img" aria-label="logout">🚪</span> Log Out*/}
-              {/*                  </a>*/}
-              {/*              </li>*/}
-              {/*          </ul>*/}
-              {/*      </div>*/}
-              {/*    )}*/}
-              {/*</div>*/}
           </div>
       </div>
     );

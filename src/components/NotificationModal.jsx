@@ -1,62 +1,7 @@
-import React, {useCallback, useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import apiClient from "../utils/apiClient";
+import React from "react";
 
-const NotificationModal = ({ isOpen, notifications, setNotifications, onClose }) => {
-  const [hasFetched, setHasFetched] = useState(false);
-  const navigate = useNavigate();
-
-  const fetchNotifications = useCallback(async () => {
-    const memberId = localStorage.getItem("memberId");
-    try {
-      console.log("Fetching notifications...");
-      const response = await apiClient.get(`/pushs`, {
-        params: { memberId },
-      });
-      setNotifications(response.data.data || []);
-    } catch (error) {
-      console.error("Failed to fetch notifications:", error);
-    }
-  }, [setNotifications]);
-
-  useEffect(() => {
-    if (!hasFetched) {
-      console.log("Reloading notifications...");
-      fetchNotifications();
-      setHasFetched(true);
-    }
-  }, [isOpen, hasFetched, fetchNotifications]);
-
-  const handleClose = () => {
-    setHasFetched(false);
-    onClose();
-  };
-
+const NotificationModal = ({ isOpen, notifications, onClose, onNotificationClick }) => {
   if (!isOpen) return null;
-
-  const handleNotificationClick = async (postId, confirmed, pushId) => {
-    console.log(postId);
-    if (!confirmed) {
-      try {
-        await apiClient.put(`/pushs/${pushId}/confirm`);
-        console.log(`Push with ID ${pushId} confirmed.`);
-
-        setNotifications((prevNotifications) =>
-          prevNotifications.map((notification) =>
-            notification.id === pushId
-              ? { ...notification, confirmed: true }
-              : notification
-          )
-        );
-
-      } catch (error) {
-        console.error(`Failed to confirm push with ID ${pushId}:`, error);
-      }
-    }
-    if (postId) {
-      navigate(`/posts/${postId}`); // postId로 이동
-    }
-  }
 
   return (
     <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50">
@@ -64,14 +9,14 @@ const NotificationModal = ({ isOpen, notifications, setNotifications, onClose })
         <h3 className="text-lg font-semibold mb-2">알림</h3>
         <ul className="space-y-2 max-h-64 overflow-y-auto">
           {notifications.length > 0 ? (
-            notifications.map((notification, index) => (
+            notifications.map((notification) => (
               <li
-                key={index}
-                onClick={() => handleNotificationClick(notification.postId, notification.confirmed, notification.id)}
+                key={notification.id}
+                onClick={() => onNotificationClick(notification)}
                 className={`p-2 border-b last:border-b-0 cursor-pointer rounded ${
                   !notification.confirmed
                     ? "hover:bg-gray-100"
-                    : "bg-gray-200 text-gray-400" // 연한 색상
+                    : "bg-gray-200 text-gray-400"
                 }`}
               >
                 {notification.message}
@@ -83,7 +28,7 @@ const NotificationModal = ({ isOpen, notifications, setNotifications, onClose })
         </ul>
         <button
           className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-          onClick={handleClose}
+          onClick={onClose}
         >
           Close
         </button>
