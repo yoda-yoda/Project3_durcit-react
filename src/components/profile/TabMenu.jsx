@@ -7,7 +7,7 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         <li
           onClick={() => onTabChange("overview")}
           className={`cursor-pointer pb-2 text-lg ${
-            activeTab === "overview" ? "border-b-2 border-blue-500 text-blue-500" : "hover:text-blue-500"
+            activeTab === "overview" ? "border-b-2 border-red-500 text-red-600" : "hover:text-red-600"
           }`}
         >
           Overview
@@ -15,7 +15,7 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         <li
           onClick={() => onTabChange("posts")}
           className={`cursor-pointer pb-2 text-lg ${
-            activeTab === "posts" ? "border-b-2 border-blue-500 text-blue-500" : "hover:text-blue-500"
+            activeTab === "posts" ? "border-b-2 border-red-500 text-red-600" : "hover:text-red-600"
           }`}
         >
           Posts
@@ -23,7 +23,7 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         <li
           onClick={() => onTabChange("comments")}
           className={`cursor-pointer pb-2 text-lg ${
-            activeTab === "comments" ? "border-b-2 border-blue-500 text-blue-500" : "hover:text-blue-500"
+            activeTab === "comments" ? "border-b-2 border-red-500 text-red-600" : "hover:text-red-600"
           }`}
         >
           Comments
@@ -31,7 +31,7 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         <li
           onClick={() => onTabChange("followers")}
           className={`cursor-pointer pb-2 text-lg ${
-            activeTab === "followers" ? "border-b-2 border-blue-500 text-blue-500" : "hover:text-blue-500"
+            activeTab === "followers" ? "border-b-2 border-red-600 text-red-600" : "hover:text-red-600"
           }`}
         >
           Followers
@@ -39,7 +39,7 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         <li
           onClick={() => onTabChange("following")}
           className={`cursor-pointer pb-2 text-lg ${
-            activeTab === "following" ? "border-b-2 border-blue-500 text-blue-500" : "hover:text-blue-500"
+            activeTab === "following" ? "border-b-2 border-red-600 text-red-600" : "hover:text-red-600"
           }`}
         >
           Following

@@ -44,7 +44,7 @@ const ProfileInfo = ({ onProfileImageClick, onPasswordChangeClick }) => {
         <div className="mt-4 flex space-x-4">
           <button
             onClick={onProfileImageClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
           >
             프로필 사진 변경
           </button>
