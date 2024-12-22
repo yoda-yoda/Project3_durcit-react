@@ -9,30 +9,55 @@ const Register = () => {
     nickname: "",
     password: "",
   });
+  const [profileImage, setProfileImage] = useState(null); // 프로필 이미지 파일
+  const [profilePreview, setProfilePreview] = useState(null); // 이미지 미리보기 URL
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]; // 업로드된 파일 가져오기
+    setProfileImage(file);
+
+    if (file) {
+      // 파일 미리보기 URL 생성
+      const imageUrl = URL.createObjectURL(file);
+      setProfilePreview(imageUrl);
+    }
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError(""); // 에러 메시지 초기화
-    setIsLoading(true); // 로딩 시작
+    setError("");
+    setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", formData);
-      console.log("회원가입 성공:", response.data);
+      const formDataToSend = new FormData();
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("nickname", formData.nickname);
+      formDataToSend.append("password", formData.password);
+      if (profileImage) {
+        formDataToSend.append("profileImage", profileImage); // 이미지 추가
+      }
 
-      setIsLoading(false); // 로딩 종료
+      const response = await axios.post(
+        "http://localhost:8080/auth/register",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } } // 파일 업로드 설정
+      );
+
+      console.log("회원가입 성공:", response.data);
+      setIsLoading(false);
       alert("가입 성공! 입력하신 이메일에서 인증 메일을 확인해주세요.");
       navigate("/");
     } catch (err) {
       console.error("회원가입 실패:", err);
       setError(err.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
-      setIsLoading(false); // 로딩 종료
+      setIsLoading(false);
     }
   };
 
@@ -41,6 +66,16 @@ const Register = () => {
       <h1 className="text-2xl font-bold">회원가입</h1>
       <form onSubmit={handleRegister} className="w-full max-w-sm flex flex-col space-y-4">
         <div>
+          {/* 프로필 이미지 미리보기 */}
+          <div className="flex flex-col items-center mb-4">
+            {profilePreview && (
+              <img
+                src={profilePreview}
+                alt="Profile Preview"
+                className="w-32 h-32 object-cover rounded-full border-4 border-gray-300"
+              />
+            )}
+          </div>
           <label className="block mb-1 font-semibold">
             이메일 <span className="text-red-500">*</span>
           </label>
@@ -54,6 +89,7 @@ const Register = () => {
             required
           />
         </div>
+
         <div>
           <label className="block mb-1 font-semibold">닉네임 (선택)</label>
           <input
@@ -65,6 +101,7 @@ const Register = () => {
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
           />
         </div>
+
         <div>
           <label className="block mb-1 font-semibold">
             비밀번호 <span className="text-red-500">*</span>
@@ -79,6 +116,18 @@ const Register = () => {
             required
           />
         </div>
+
+        {/* 프로필 이미지 업로드 */}
+        <div>
+          <label className="block mb-1 font-semibold">프로필 이미지 (선택)</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full px-4 py-2 border rounded-lg"
+          />
+        </div>
+
         <button
           type="submit"
           className="px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700"
