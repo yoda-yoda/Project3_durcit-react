@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setTokens } from "../store/authSlice";
-import { useWebSocket } from "../context/WebSocketContext";
+import {useWebSocket} from "../context/WebSocketContext";
 
 const Login = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
@@ -12,6 +12,7 @@ const Login = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { setIsLoggedIn } = useWebSocket();
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,15 +23,17 @@ const Login = ({ isOpen, onClose }) => {
                 email,
                 password,
             });
-
-            const { accessToken, refreshToken } = response.data;
+            console.log(response);
+            const { accessToken, refreshToken, memberId } = response.data;
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
-            dispatch(setTokens({ accessToken, refreshToken }));
+            localStorage.setItem("memberId", memberId);
             setIsLoggedIn(true);
-            onClose(); // Close the modal after successful login
-            window.location.reload();
-            navigate("/"); // Navigate to the main page
+
+            dispatch(setTokens({ accessToken, refreshToken }));
+
+            onClose();
+            navigate("/");
         } catch (err) {
             console.error("로그인 실패:", err);
             setError(err.response?.data?.message || "로그인 중 오류가 발생했습니다.");
