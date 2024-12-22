@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import apiClient from "../../utils/apiClient";
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -7,6 +8,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleChangePassword = async () => {
     try {
@@ -17,6 +19,7 @@ const ResetPassword = () => {
       });
       setSuccess("Password changed successfully!");
       setError("");
+      navigate("/");
     } catch (error) {
       setError("Failed to change password. Please check your input.");
       setSuccess("");
