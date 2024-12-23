@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Login from "../pages/Login";
 import axios from "axios";
 import NotificationModal from "./NotificationModal";
+import SearchBar from "./SearchBar";
 import { useWebSocket } from "../context/WebSocketContext";
 import apiClient from "../utils/apiClient";
 
@@ -94,21 +95,15 @@ const TopBar = () => {
     return (
       <div className="w-full flex justify-between items-center px-6 py-4 bg-gray-50 text-gray-600 fixed top-0 left-0 z-10 h-16 shadow">
           {/* 로고 섹션 */}
-          <Link to="/" className="text-2xl font-bold">
+          <Link to="/" className="text-2xl font-bold m-4">
               <img src="/durcit-header-logo.png" alt="Durcit Logo" className="w-28 h-auto" />
           </Link>
 
           {/* 검색바 섹션 */}
-          <div className="flex-1 mx-6">
-              <input
-                type="text"
-                placeholder="Search Durcit"
-                className="w-full px-4 py-2 border rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-500"
-              />
-          </div>
+          <SearchBar />
 
           {/* 버튼 섹션 */}
-          <div className="flex items-center space-x-4 relative">
+          <div className="flex items-center space-x-4 relative m-4">
               {/* 알림 버튼 */}
               <button
                 className="text-yellow-500 text-xl hover:text-yellow-600 focus:outline-none"

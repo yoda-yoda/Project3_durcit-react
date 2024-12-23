@@ -44,6 +44,14 @@ const TabMenu = ({ activeTab, onTabChange }) => {
         >
           Following
         </li>
+        <li
+          onClick={() => onTabChange("tagFollowing")}
+          className={`cursor-pointer pb-2 text-lg ${
+            activeTab === "tagFollowing" ? "border-b-2 border-red-600 text-red-600" : "hover:text-red-600"
+          }`}
+        >
+          TagFollowing
+        </li>
       </ul>
     </div>
   );

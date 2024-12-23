@@ -10,6 +10,8 @@ import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
 import CommentSection from "../components/comment/CommentSection";
 import MentionsInput from "../components/comment/MentionsInput";
+import TagList from "../components/post/TagList";
+import axios from "axios";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -66,21 +68,60 @@ const PostDetail = () => {
     }
   };
 
+  const handleToggleSuccess = (tagId, isFollowing) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      tags: prevPost.tags.map((tag) =>
+        tag.id === tagId ? { ...tag, isFollowing } : tag
+      ),
+    }));
+  };
+
+  const handleToggleFollow = async (tagId, isFollowing) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/tags/${tagId}/unfollow`);
+
+
+      // 상태 업데이트
+      setPost((prevPost) => ({
+        ...prevPost,
+        tags: prevPost.tags.map((tag) =>
+          tag.id === tagId ? { ...tag, isFollowing: !isFollowing } : tag
+        ),
+      }));
+    } catch (error) {
+      console.error("Failed to toggle follow status:", error);
+    }
+  };
+
   const fetchPostDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/posts/${postId}`);
-      const data = await response.json();
+      const memberId = localStorage.getItem("memberId"); // 로컬 스토리지에서 memberId 가져오기
+      const requestBody = memberId ? Number(memberId) : null; // memberId가 없으면 null로 처리
+
+      const response = await axios.post(`http://localhost:8080/api/posts/${postId}`, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = response.data;
+
+      // 상태 업데이트
       setPost(data.data);
       setTags(data.data.tags);
       setLikes(data.data.post.likes);
-      setReactions(data.data.emojis.emojis.reduce((acc, emoji) => {
-        acc[emoji.emoji] = emoji.count;
-        return acc;
-      }, {}));
+      setReactions(
+        data.data.emojis.emojis.reduce((acc, emoji) => {
+          acc[emoji.emoji] = emoji.count;
+          return acc;
+        }, {})
+      );
     } catch (error) {
       console.error("Failed to fetch post details:", error);
     }
   };
+
 
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
@@ -229,20 +270,11 @@ const PostDetail = () => {
 
 
         {/* 태그 섹션 */}
-        {tags.length > 0 && (
-          <div className="mt-4">
-            <strong>Tags</strong>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag.id}
-                  className="px-2 py-1 bg-gray-200 rounded-full text-gray-700 font-semibold text-sm"
-                >
-                    #{tag.contents}
-                  </span>
-              ))}
-            </div>
-          </div>
+        {post.tags && (
+          <TagList
+            tags={post.tags}
+            onToggleSuccess={handleToggleSuccess}
+          />
         )}
 
 

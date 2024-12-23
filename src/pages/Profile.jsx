@@ -10,6 +10,8 @@ import ProfileImageModal from "../components/profile/ProfileImageModal";
 import FollowersTab from "../components/profile/FollowersTab";
 import FollowingTab from "../components/profile/FollowingTab";
 
+import FollowingTagsTab from "../components/profile/FollowingTagsTab";
+
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const UserProfile = () => {
         {activeTab === "comments" && <CommentsTab />}
         {activeTab === "followers" && <FollowersTab />}
         {activeTab === "following" && <FollowingTab />}
+        {activeTab === "tagFollowing" && <FollowingTagsTab />}
       </div>
 
       {/* 모달 */}

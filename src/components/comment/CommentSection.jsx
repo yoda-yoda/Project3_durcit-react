@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ProfileHoverCard from "../profile/ProfileHoverCard";
 
 const CommentSection = ({ comments, onReply }) => {
   const [commentTree, setCommentTree] = useState([]);
@@ -37,11 +38,12 @@ const CommentSection = ({ comments, onReply }) => {
   const renderComments = (comments) => {
     return comments.map((comment) => (
       <div key={comment.id} className="mb-4">
-        <div className="flex items-start mb-2">
-          <img
-            src={comment.userThumbnail || "/default-avatar.png"}
-            alt={comment.authorNickname}
-            className="w-10 h-10 rounded-full mr-3"
+        <div className="flex items-start mb-2 mr-1">
+          <ProfileHoverCard
+            profileImage={comment.userThumbnail || "/default-avatar.png"}
+            username={comment.authorNickname}
+            nickname={comment.authorNickname}
+            targetMemberId={comment.authorId} // 댓글 작성자의 ID
           />
           <div>
             <div className="font-semibold">{comment.authorNickname}</div>
