@@ -18,7 +18,7 @@ const PostDetail = () => {
   const [reactions, setReactions] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  const [isAddingComment, setIsAddingComment] = useState(false);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [selectedMentions, setSelectedMentions] = useState([]);
   const [parentId, setParentId] = useState(null);
@@ -56,11 +56,11 @@ const PostDetail = () => {
         parentId: parentId,
       });
 
-      if (response.status === 200) {
-        setNewComment("");
-        setSelectedMentions([]);
-        // Fetch updated comments logic here
-      }
+      const newCommentData = response.data.data;
+      setComments((prev) => [...prev, newCommentData]);
+      setNewComment("");
+      setSelectedMentions([]);
+
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
@@ -137,11 +137,6 @@ const PostDetail = () => {
       console.error("Failed to retrieve emoji from picker");
     }
     setShowEmojiPicker(false);
-  };
-
-  const handleCancelComment = () => {
-    setIsAddingComment(false);
-    setNewComment("");
   };
 
   const sliderSettings = {

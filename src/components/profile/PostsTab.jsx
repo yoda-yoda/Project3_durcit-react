@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate import
 import apiClient from "../../utils/apiClient";
 
 const PostsTab = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // useNavigate 초기화
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,6 +24,10 @@ const PostsTab = () => {
     fetchPosts();
   }, []);
 
+  const handlePostClick = (postId) => {
+    navigate(`/posts/${postId}`); // 특정 포스트 ID로 이동
+  };
+
   if (loading) {
     return <div className="text-center mt-6">Loading posts...</div>;
   }
@@ -37,6 +43,7 @@ const PostsTab = () => {
           <div
             key={post.id}
             className="p-4 border rounded shadow hover:bg-gray-50 cursor-pointer"
+            onClick={() => handlePostClick(post.id)} // 클릭 이벤트 추가
           >
             <h3 className="text-lg font-bold">{post.title}</h3>
             <p className="text-sm text-gray-500">작성일: {post.createdAt}</p>
