@@ -12,6 +12,8 @@ import FollowingTab from "../components/profile/FollowingTab";
 
 import FollowingTagsTab from "../components/profile/FollowingTagsTab";
 
+import LikesTab from "../components/profile/LikesTab";
+
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const UserProfile = () => {
         {activeTab === "followers" && <FollowersTab />}
         {activeTab === "following" && <FollowingTab />}
         {activeTab === "tagFollowing" && <FollowingTagsTab />}
+        {activeTab === "likes" && <LikesTab />}
       </div>
 
       {/* 모달 */}
