@@ -43,7 +43,7 @@ const SearchBar = ({ placeholder = "Search Durcit" }) => {
   const handleSearchItemClick = (item) => {
     if (item.type === "post") navigate(`/posts/${item.id}`);
     if (item.type === "user") navigate(`/users/${item.id}`);
-    if (item.type === "tag") navigate(`/tags/${item.name}`);
+    if (item.type === "tag") navigate(`/search/tags/${item.name}`);
   };
 
   return (

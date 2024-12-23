@@ -46,16 +46,16 @@ const CommentSection = ({ comments, onReply }) => {
             targetMemberId={comment.authorId} // 댓글 작성자의 ID
           />
           <div>
-            <div className="font-semibold">{comment.authorNickname}</div>
-            <p className="text-gray-700">{comment.content}</p>
+            <div className="font-semibold ml-4">{comment.authorNickname}</div>
+            <p className="text-gray-700 ml-4">{comment.content}</p>
             {comment.mentionList.length > 0 && (
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 ml-4">
                 Mentions: {comment.mentionList.join(", ")}
               </div>
             )}
             <button
               onClick={() => onReply(comment.id)}
-              className="mt-2 text-sm text-blue-500 hover:underline"
+              className="mt-2 text-sm text-blue-500 hover:underline ml-4"
             >
               Reply
             </button>

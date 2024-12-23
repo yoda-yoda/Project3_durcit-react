@@ -19,6 +19,7 @@ import ResetPassword from "./pages/password/ResetPassword";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TagSearchPage from "./pages/TagSearchPage";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="/post" element={<Post />} ></Route>
               <Route path="/profile" element={<Profile />} />
               <Route path="/posts/:postId" element={<PostDetail />} />
+              <Route path="/search/tags/:tag" element={<TagSearchPage />} />
               <Route path="/create-post" element={<CreatePost />}></Route>
               <Route path="/email-verification-success" element={<EmailVerificationSuccess />}></Route>
               <Route path="/request-verification" element={<RequestVerificationCode />} />
