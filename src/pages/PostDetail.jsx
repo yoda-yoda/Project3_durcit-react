@@ -11,6 +11,7 @@ import ProfileHoverCard from "../components/profile/ProfileHoverCard";
 import CommentSection from "../components/comment/CommentSection";
 import MentionsInput from "../components/comment/MentionsInput";
 import TagList from "../components/post/TagList";
+import ImageSlider from "../components/post/ImageSlider";
 import axios from "axios";
 
 const PostDetail = () => {
@@ -239,31 +240,7 @@ const PostDetail = () => {
             </div>
           </div>
           <div className="mt-4">
-            {post.uploads.length > 0 ? (
-              post.uploads.length > 1 ? (
-                // 슬라이더로 여러 이미지 표시
-                <Slider {...sliderSettings}>
-                  {post.uploads.map((image, index) => (
-                    <div key={`${image.url}-${index}`}>
-                      <img
-                        src={image.url}
-                        alt={`Upload ${index + 1}`}
-                        className="w-full h-auto rounded"
-                      />
-                    </div>
-                  ))}
-                </Slider>
-              ) : (
-                // 단일 이미지 표시
-                <div>
-                  <img
-                    src={post.uploads[0]?.url}
-                    alt="Post upload"
-                    className="w-full h-auto rounded"
-                  />
-                </div>
-              )
-            ) : null /* 이미지가 없을 경우 아무것도 렌더링하지 않음 */}
+            {post.uploads.length > 0 && <ImageSlider uploads={post.uploads} />}
           </div>
           <p className="text-gray-700">{post.post.content}</p>
         </div>
