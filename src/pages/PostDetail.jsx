@@ -8,6 +8,8 @@ import {connectWebSocket, addEmoji, disconnectWebSocket, connectWebSocketEmoji} 
 import apiClient from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
+import CommentSection from "../components/comment/CommentSection";
+import MentionsInput from "../components/comment/MentionsInput";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -15,9 +17,12 @@ const PostDetail = () => {
   const [likes, setLikes] = useState(0);
   const [reactions, setReactions] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [mentions, setMentions] = useState([]);
+  const [selectedMentions, setSelectedMentions] = useState([]);
+  const [parentId, setParentId] = useState(null);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [tags, setTags] = useState([]);
@@ -33,6 +38,33 @@ const PostDetail = () => {
       disconnectWebSocket();
     };
   }, [postId]);
+
+  const handleAddMention = (mention) => {
+    setSelectedMentions((prev) => [...prev, mention]);
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const mentions = selectedMentions.map((mention) => mention.nickname);
+
+      const response = await apiClient.post("/comments", {
+        content: newComment,
+        postId: postId,
+        mentionList: mentions,
+        parentId: parentId,
+      });
+
+      if (response.status === 200) {
+        setNewComment("");
+        setSelectedMentions([]);
+        // Fetch updated comments logic here
+      }
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
+  };
 
   const fetchPostDetails = async () => {
     try {
@@ -112,12 +144,6 @@ const PostDetail = () => {
     setNewComment("");
   };
 
-  const handleAddComment = () => {
-    alert(`Comment added: ${newComment}`);
-    setIsAddingComment(false);
-    setNewComment("");
-  };
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -177,29 +203,31 @@ const PostDetail = () => {
             </div>
           </div>
           <div className="mt-4">
-            {post.uploads.length > 1 ? (
-              // 슬라이더로 여러 이미지 표시
-              <Slider {...sliderSettings}>
-                {post.uploads.map((image, index) => (
-                  <div key={`${image.url}-${index}`}>
-                    <img
-                      src={image.url}
-                      alt={`Upload ${index + 1}`}
-                      className="w-full h-auto rounded"
-                    />
-                  </div>
-                ))}
-              </Slider>
-            ) : (
-              // 단일 이미지 표시
-              <div>
-                <img
-                  src={post.uploads[0]?.url}
-                  alt="Post upload"
-                  className="w-full h-auto rounded"
-                />
-              </div>
-            )}
+            {post.uploads.length > 0 ? (
+              post.uploads.length > 1 ? (
+                // 슬라이더로 여러 이미지 표시
+                <Slider {...sliderSettings}>
+                  {post.uploads.map((image, index) => (
+                    <div key={`${image.url}-${index}`}>
+                      <img
+                        src={image.url}
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-auto rounded"
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                // 단일 이미지 표시
+                <div>
+                  <img
+                    src={post.uploads[0]?.url}
+                    alt="Post upload"
+                    className="w-full h-auto rounded"
+                  />
+                </div>
+              )
+            ) : null /* 이미지가 없을 경우 아무것도 렌더링하지 않음 */}
           </div>
           <p className="text-gray-700">{post.post.content}</p>
         </div>
@@ -257,64 +285,40 @@ const PostDetail = () => {
         </div>
       </div>
 
+      {/* Add Comment Section */}
       <div className="mb-4">
-        {isAddingComment ? (
-          <div className="relative">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Write your comment..."
-              rows={2}
-              className="w-full px-4 py-2 rounded-full shadow bg-gray-200 text-gray-700 resize-none"
-            />
-            <div className="flex justify-between items-center mt-2 gap-4">
-              <button
-                onClick={handleCancelComment}
-                className="px-4 py-2 text-gray-700 rounded-full shadow hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddComment}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full shadow hover:bg-gray-300"
-              >
-                Comment
-              </button>
-            </div>
-          </div>
-        ) :
-          (
-            <button
-              onClick={() => setIsAddingComment(true)}
-              className="flex items-center px-4 py-2 text-gray-800 bg-white rounded-full shadow hover:bg-gray-200"
-            >
-              + Add a Comment
-            </button>
-          )}
+        <MentionsInput
+          value={newComment}
+          onChange={setNewComment}
+          onAddMention={(mention) =>
+            setSelectedMentions((prev) => [...prev, mention])
+          }
+        />
+        <div className="flex justify-between items-center mt-2 gap-4">
+          <button
+            onClick={() => {
+              setNewComment("");
+              setSelectedMentions([]);
+              setParentId(null);
+            }}
+            className="px-4 py-2 text-gray-700 rounded shadow hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleAddComment}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded shadow hover:bg-gray-300"
+          >
+            {parentId ? "Reply" : "Comment"}
+          </button>
+        </div>
       </div>
 
-      <div className="bg-white p-4 rounded shadow">
-        <h2 className="text-lg font-semibold mb-4">Comments</h2>
-        {post.comments && post.comments.length > 0 ? (
-          post.comments.map((comment) => (
-            <div key={comment.id} className="mb-4">
-              <div className="flex items-start mb-2">
-                <img
-                  src={comment.userThumbnail || "/default-avatar.png"}
-                  alt={comment.author}
-                  className="w-10 h-10 rounded-full mr-3"
-                />
-                <div>
-                  <div className="font-semibold">{comment.author}</div>
-                  <p className="text-gray-700">{comment.content}</p>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600">No comments yet. Be the first to comment!</p>
-        )}
-      </div>
+      {/* Comments Section */}
+      <CommentSection
+        comments={post.comments || []}
+        onReply={(id) => setParentId(id)}
+      />
     </div>
   );
 };

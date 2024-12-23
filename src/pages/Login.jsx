@@ -33,7 +33,7 @@ const Login = ({ isOpen, onClose }) => {
             dispatch(setTokens({ accessToken, refreshToken }));
 
             onClose();
-            navigate("/");
+            navigate('/', { replace: true });
         } catch (err) {
             console.error("로그인 실패:", err);
             setError(err.response?.data?.message || "로그인 중 오류가 발생했습니다.");

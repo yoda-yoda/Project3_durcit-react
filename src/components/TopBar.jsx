@@ -73,7 +73,7 @@ const TopBar = () => {
     const handleNotificationClick = async (notification) => {
         if (!notification.confirmed) {
             try {
-                await apiClient().put(`/pushs/${notification.id}/confirm`);
+                await apiClient.put(`/pushs/${notification.id}/confirm`);
                 setNotifications((prev) =>
                   prev.map((notif) =>
                     notif.id === notification.id
