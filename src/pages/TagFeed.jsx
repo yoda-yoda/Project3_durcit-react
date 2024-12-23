@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import MainFeedTopBar from "../components/MainFeedTopbar";
-import useFetchPosts from "../hooks/useFetchPosts";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useFetchPosts from "../hooks/useFetchPosts";
 
-const MainFeed = () => {
+const TagFeed = () => {
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    "http://localhost:8080/api/posts/pages"
+    "http://localhost:8080/api/tag-feed/posts" // 태그 기반 API 엔드포인트
   );
-  const [selectedOption, setSelectedOption] = useState("Best");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 초기 데이터 로드 및 스크롤 이벤트 등록
-    loadMorePosts(); // 첫 페이지 데이터 로드
-
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
@@ -26,25 +21,16 @@ const MainFeed = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMorePosts]); // loadMorePosts 함수에 의존
-
-  // 카테고리 변경 핸들러
-  const handleCategoryChange = (event) => {
-    const newCategory = event.target.value;
-    setSelectedOption(newCategory); // 선택된 옵션 상태 업데이트
-    setCategory(newCategory); // useFetchPosts에서 카테고리 변경
-  };
+  }, [loadMorePosts]);
 
   return (
     <div>
-      <MainFeedTopBar />
-      <h1 className="text-2xl font-bold mb-4 mt-6">Welcome to the Game Community</h1>
+      <h1 className="text-2xl font-bold mb-4 mt-6">Posts from Followed Tags</h1>
 
       {/* 드롭다운 메뉴 */}
       <div className="mb-6">
         <select
-          value={selectedOption}
-          onChange={handleCategoryChange} // 수정된 부분
+          onChange={(e) => setCategory(e.target.value)}
           className="p-2 bg-white rounded text-gray-700"
         >
           <option value="Best">Best</option>
@@ -108,4 +94,4 @@ const MainFeed = () => {
   );
 };
 
-export default MainFeed;
+export default TagFeed;
