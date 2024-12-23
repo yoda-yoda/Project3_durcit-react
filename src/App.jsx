@@ -5,6 +5,7 @@ import TopBar from "./components/TopBar";
 import SideBar from "./components/SideBar";
 import ChatButton from "./components/chat/ChatButton";
 import MainFeed from "./pages/MainFeed";
+import TagFeed from "./pages/TagFeed";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthRedirect from "./pages/AuthRedirect";
@@ -30,7 +31,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<MainFeed />} />
               <Route path="/posts" element={<MainFeed />} />
-              <Route path="/tags" element={<MainFeed />} />
+              <Route path="/tags" element={<TagFeed />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<AuthRedirect />} />
               <Route path="/register" element={<Register />} />

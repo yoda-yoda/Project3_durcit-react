@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetchPosts from "../hooks/useFetchPosts";
+import MainFeedTopBar from "../components/MainFeedTopbar";
 
 const TagFeed = () => {
+  const memberId = localStorage.getItem("memberId");
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    "http://localhost:8080/api/tag-feed/posts" // 태그 기반 API 엔드포인트
+    `http://localhost:8080/api/posts/pages/tags?memberId=${memberId}` // 태그 기반 API 엔드포인트
   );
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 초기 데이터 로드 및 스크롤 이벤트 등록
+    loadMorePosts(); // 첫 페이지 데이터 로드
+
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
@@ -21,10 +26,11 @@ const TagFeed = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMorePosts]);
+  }, [loadMorePosts]); // loadMorePosts 함수에 의존
 
   return (
     <div>
+      <MainFeedTopBar />
       <h1 className="text-2xl font-bold mb-4 mt-6">Posts from Followed Tags</h1>
 
       {/* 드롭다운 메뉴 */}
