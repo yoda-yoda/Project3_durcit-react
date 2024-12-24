@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../../utils/apiClient";
+import NicknameModal from "./NicknameModal";
 
 const ProfileInfo = ({ onProfileImageClick, onPasswordChangeClick }) => {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await apiClient.get("/profile");
-        setProfile(response.data.data); // API 응답 데이터를 상태로 설정
+        setProfile(response.data.data);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
         alert("프로필 정보를 가져오는데 실패했습니다.");
@@ -20,6 +22,14 @@ const ProfileInfo = ({ onProfileImageClick, onPasswordChangeClick }) => {
 
     fetchProfile();
   }, []);
+
+  const handleOpenNicknameModal = () => {
+    setIsNicknameModalOpen(true);
+  };
+
+  const handleCloseNicknameModal = () => {
+    setIsNicknameModalOpen(false);
+  };
 
   if (isLoading) {
     return <div>Loading profile...</div>;
@@ -54,8 +64,21 @@ const ProfileInfo = ({ onProfileImageClick, onPasswordChangeClick }) => {
           >
             비밀번호 변경
           </button>
+          <button
+            onClick={handleOpenNicknameModal}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            닉네임 변경
+          </button>
         </div>
       </div>
+      {isNicknameModalOpen && (
+        <NicknameModal
+          currentNickname={profile.nickname}
+          onClose={handleCloseNicknameModal}
+          onNicknameChange={(newNickname) => setProfile({ ...profile, nickname: newNickname })}
+        />
+      )}
     </div>
   );
 };
