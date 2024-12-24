@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { WebSocketProvider } from "./context/WebSocketContext";
 import { useDispatch } from "react-redux"; // Redux 디스패치
@@ -45,7 +45,7 @@ const App = () => {
               <Route path="/" element={<MainFeed />} />
               <Route path="/posts" element={<MainFeed />} />
               <Route path="/tags" element={<TagFeed />} />
-              <Route path="users/:userId" element={<FeedPage />} />
+              <Route path="/users/:userId" element={<FeedPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<AuthRedirect />} />
               <Route path="/register" element={<Register />} />

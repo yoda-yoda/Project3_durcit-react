@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,6 +13,7 @@ import MentionsInput from "../components/comment/MentionsInput";
 import TagList from "../components/post/TagList";
 import ImageSlider from "../components/post/ImageSlider";
 import axios from "axios";
+import EditPost from "./EditPost";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -31,6 +32,8 @@ const PostDetail = () => {
   const [tags, setTags] = useState([]);
   const navigate = useNavigate(); // useNavigate 훅 추가
 
+  const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     // Fetch post details
     fetchPostDetails();
@@ -46,6 +49,15 @@ const PostDetail = () => {
   const handleAddMention = (mention) => {
     setSelectedMentions((prev) => [...prev, mention]);
   };
+
+  const handleEditClick = () => {
+    setIsEditing(true); // 수정 모드로 전환
+  };
+
+  if (isEditing) {
+    // EditPost 컴포넌트를 렌더링하며 데이터 전달
+    return <EditPost post={post} setIsEditing={setIsEditing} />;
+  }
 
   const handleAddComment = async () => {
     try {
@@ -127,11 +139,6 @@ const PostDetail = () => {
     }
   };
 
-
-  const handleEditClick = () => {
-    // 게시물 데이터를 EditPost로 전달
-    navigate(`/posts/edit/${postId}`, { state: { post } });
-  };
 
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
