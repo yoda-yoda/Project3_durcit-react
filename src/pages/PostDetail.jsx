@@ -29,6 +29,7 @@ const PostDetail = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [tags, setTags] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   useEffect(() => {
     // Fetch post details
@@ -127,6 +128,11 @@ const PostDetail = () => {
   };
 
 
+  const handleEditClick = () => {
+    // 게시물 데이터를 EditPost로 전달
+    navigate(`/posts/edit/${postId}`, { state: { post } });
+  };
+
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
 
@@ -222,6 +228,12 @@ const PostDetail = () => {
                 >
                   Delete
                 </button>
+                <button
+                  onClick={handleEditClick}
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  Edit
+                </button>
               </div>
             )}
           </div>
@@ -256,7 +268,6 @@ const PostDetail = () => {
             onToggleSuccess={handleToggleSuccess}
           />
         )}
-
 
         <div className="flex items-center gap-4 mt-4">
           <button

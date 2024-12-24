@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import MainFeedTopBar from "../components/MainFeedTopbar";
 import useFetchPosts from "../hooks/useFetchPosts";
 import { useNavigate } from "react-router-dom";
