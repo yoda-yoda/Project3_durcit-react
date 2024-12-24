@@ -20,6 +20,7 @@ import ResetPassword from "./pages/password/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TagSearchPage from "./pages/TagSearchPage";
+import FeedPage from "./pages/FeedPage";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
               <Route path="/" element={<MainFeed />} />
               <Route path="/posts" element={<MainFeed />} />
               <Route path="/tags" element={<TagFeed />} />
+              <Route path="users/:userId" element={<FeedPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<AuthRedirect />} />
               <Route path="/register" element={<Register />} />

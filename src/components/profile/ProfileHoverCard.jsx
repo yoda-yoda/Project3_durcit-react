@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../../utils/apiClient";
 
 const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMemberId }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
 
   const defaultImage = "/default-avatar.png"; // 대체 이미지 경로
 
@@ -49,6 +51,10 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
     }
   };
 
+  const handleNavigateToFeed = () => {
+    navigate(`/users/${targetMemberId}`); // 유저 피드 페이지로 이동
+  };
+
   return (
     <div
       className="relative inline-block"
@@ -60,6 +66,7 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
         src={profileImage || defaultImage}
         alt={username}
         className="w-12 h-12 rounded-full cursor-pointer"
+        onClick={handleNavigateToFeed}
       />
 
       {/* 호버 시 표시될 카드 */}
