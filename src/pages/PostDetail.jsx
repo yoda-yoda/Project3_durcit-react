@@ -47,25 +47,28 @@ const PostDetail = () => {
   };
 
   const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-
     try {
-      const mentions = selectedMentions.map((mention) => mention.nickname);
-
       const response = await apiClient.post("/comments", {
         content: newComment,
         postId: postId,
-        mentionList: mentions,
+        mentionList: [], // 멘션 리스트가 없으면 빈 배열 전달
         parentId: parentId,
       });
 
       const newCommentData = response.data.data;
-      setComments((prev) => [...prev, newCommentData]);
-      setNewComment("");
-      setSelectedMentions([]);
 
+      // 댓글 리스트 업데이트
+      setPost((prevPost) => ({
+        ...prevPost,
+        comments: [...prevPost.comments, newCommentData],
+      }));
+
+      // 입력 필드 초기화
+      setNewComment("");
+      setParentId(null);
     } catch (error) {
-      console.error("Failed to add comment:", error);
+      console.error("댓글 추가 실패:", error);
+      alert("댓글 추가에 실패했습니다.");
     }
   };
 
