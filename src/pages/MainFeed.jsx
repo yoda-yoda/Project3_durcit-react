@@ -17,13 +17,16 @@ const MainFeed = () => {
   const fetchPosts = async (page, category) => {
     console.log("Fetching posts for page:", page);
     try {
-      const response = await axios.get("http://localhost:8080/api/posts/pages", {
-        params: {
-          page,
-          size: PAGE_SIZE,
-          category: category || "All",
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8080/api/posts/pages",
+        {
+          params: {
+            page,
+            size: PAGE_SIZE,
+            category: category || "All",
+          },
+        }
+      );
       console.log(response.data);
       return response.data.data.content; // Spring Data Page 객체의 content
     } catch (error) {
@@ -42,7 +45,8 @@ const MainFeed = () => {
         setPosts((prev) => {
           const mergedPosts = [...prev, ...newPosts];
           const uniquePosts = mergedPosts.filter(
-            (post, index, self) => self.findIndex((p) => p.id === post.id) === index
+            (post, index, self) =>
+              self.findIndex((p) => p.id === post.id) === index
           );
           return uniquePosts;
         });
@@ -59,8 +63,6 @@ const MainFeed = () => {
       setIsLoading(false);
     }
   };
-
-
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
@@ -111,7 +113,9 @@ const MainFeed = () => {
   return (
     <div>
       <MainFeedTopBar />
-      <h1 className="text-2xl font-bold mb-4 mt-6">Welcome to the Game Community</h1>
+      <h1 className="text-2xl font-bold mb-4 mt-6">
+        Welcome to the Game Community
+      </h1>
 
       {/* 드롭다운 메뉴 */}
       <div className="mb-6">

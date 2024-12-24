@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EmojiPicker from "emoji-picker-react";
-import {connectWebSocket, addEmoji, disconnectWebSocket, connectWebSocketEmoji} from "../utils/webSocket";
+import {
+  connectWebSocket,
+  addEmoji,
+  disconnectWebSocket,
+  connectWebSocketEmoji,
+} from "../utils/webSocket";
 import apiClient from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
@@ -26,6 +31,7 @@ const PostDetail = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [tags, setTags] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   useEffect(() => {
     // Fetch post details
@@ -73,13 +79,20 @@ const PostDetail = () => {
       setPost(data.data);
       setTags(data.data.tags);
       setLikes(data.data.post.likes);
-      setReactions(data.data.emojis.emojis.reduce((acc, emoji) => {
-        acc[emoji.emoji] = emoji.count;
-        return acc;
-      }, {}));
+      setReactions(
+        data.data.emojis.emojis.reduce((acc, emoji) => {
+          acc[emoji.emoji] = emoji.count;
+          return acc;
+        }, {})
+      );
     } catch (error) {
       console.error("Failed to fetch post details:", error);
     }
+  };
+
+  const handleEditClick = () => {
+    // 게시물 데이터를 EditPost로 전달
+    navigate(`/posts/edit/${postId}`, { state: { post } });
   };
 
   const handleEmojiUpdate = (updatedEmoji) => {
@@ -182,6 +195,12 @@ const PostDetail = () => {
                 >
                   Delete
                 </button>
+                <button
+                  onClick={handleEditClick}
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  Edit
+                </button>
               </div>
             )}
           </div>
@@ -203,35 +222,36 @@ const PostDetail = () => {
             </div>
           </div>
           <div className="mt-4">
-            {post.uploads.length > 0 ? (
-              post.uploads.length > 1 ? (
-                // 슬라이더로 여러 이미지 표시
-                <Slider {...sliderSettings}>
-                  {post.uploads.map((image, index) => (
-                    <div key={`${image.url}-${index}`}>
-                      <img
-                        src={image.url}
-                        alt={`Upload ${index + 1}`}
-                        className="w-full h-auto rounded"
-                      />
-                    </div>
-                  ))}
-                </Slider>
-              ) : (
-                // 단일 이미지 표시
-                <div>
-                  <img
-                    src={post.uploads[0]?.url}
-                    alt="Post upload"
-                    className="w-full h-auto rounded"
-                  />
-                </div>
-              )
-            ) : null /* 이미지가 없을 경우 아무것도 렌더링하지 않음 */}
+            {
+              post.uploads.length > 0 ? (
+                post.uploads.length > 1 ? (
+                  // 슬라이더로 여러 이미지 표시
+                  <Slider {...sliderSettings}>
+                    {post.uploads.map((image, index) => (
+                      <div key={`${image.url}-${index}`}>
+                        <img
+                          src={image.url}
+                          alt={`Upload ${index + 1}`}
+                          className="w-full h-auto rounded"
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                ) : (
+                  // 단일 이미지 표시
+                  <div>
+                    <img
+                      src={post.uploads[0]?.url}
+                      alt="Post upload"
+                      className="w-full h-auto rounded"
+                    />
+                  </div>
+                )
+              ) : null /* 이미지가 없을 경우 아무것도 렌더링하지 않음 */
+            }
           </div>
           <p className="text-gray-700">{post.post.content}</p>
         </div>
-
 
         {/* 태그 섹션 */}
         {tags.length > 0 && (
@@ -243,13 +263,12 @@ const PostDetail = () => {
                   key={tag.id}
                   className="px-2 py-1 bg-gray-200 rounded-full text-gray-700 font-semibold text-sm"
                 >
-                    #{tag.contents}
-                  </span>
+                  #{tag.contents}
+                </span>
               ))}
             </div>
           </div>
         )}
-
 
         <div className="flex items-center gap-4 mt-4">
           <button
@@ -279,7 +298,7 @@ const PostDetail = () => {
           </button>
           {showEmojiPicker && (
             <div className="mt-2">
-              <EmojiPicker onEmojiClick={onEmojiClick}/>
+              <EmojiPicker onEmojiClick={onEmojiClick} />
             </div>
           )}
         </div>

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import apiClient from "../../utils/apiClient";
+import { useNavigate } from "react-router-dom";
 
 const PostsTab = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -36,6 +39,7 @@ const PostsTab = () => {
         posts.map((post) => (
           <div
             key={post.id}
+            onClick={() => navigate(`/posts/${post.id}`)} // 클릭 시 이동
             className="p-4 border rounded shadow hover:bg-gray-50 cursor-pointer"
           >
             <h3 className="text-lg font-bold">{post.title}</h3>
