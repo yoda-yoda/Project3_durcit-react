@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../../utils/apiClient";
 
 const FollowingTagsTab = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFollowingTags = async () => {
@@ -46,6 +48,10 @@ const FollowingTagsTab = () => {
     return <div className="text-center mt-6 text-red-600">{error}</div>;
   }
 
+  const handleTagClick = (tagName) => {
+    navigate(`/search/tags/${encodeURIComponent(tagName)}`); // 태그 검색 페이지로 이동
+  };
+
   return (
     <div className="text-left mt-6 space-y-4">
       {tags.length > 0 ? (
@@ -54,7 +60,9 @@ const FollowingTagsTab = () => {
             key={tag.id}
             className="p-2 border rounded shadow flex justify-between items-center hover:bg-gray-50"
           >
-            <span className="text-gray-800 font-semibold">#{tag.tag}</span>
+            <span className="text-gray-800 font-semibold"
+                  onClick={() => handleTagClick(tag.tag)}
+            >#{tag.tag}</span>
             <button
               onClick={() => handleUnfollow(tag.id)}
               className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
