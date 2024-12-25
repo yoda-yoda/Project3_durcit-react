@@ -69,12 +69,15 @@ const ProfileInfo = ({ onProfileImageClick, onPasswordChangeClick }) => {
           >
             프로필 사진 변경
           </button>
-          <button
-            onClick={onPasswordChangeClick}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          >
-            비밀번호 변경
-          </button>
+          {/* provider가 없는 경우에만 비밀번호 변경 버튼 표시 */}
+          {!profile.provider && (
+            <button
+              onClick={onPasswordChangeClick}
+              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            >
+              비밀번호 변경
+            </button>
+          )}
           <button
             onClick={handleOpenNicknameModal}
             className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
