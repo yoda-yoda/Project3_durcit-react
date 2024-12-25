@@ -161,6 +161,19 @@ const PostDetail = () => {
     setShowEmojiPicker(false);
   };
 
+  const handleDeleteClick = async () => {
+    try {
+      const response = await apiClient.delete(`/posts/${postId}`);
+      if (response.status === 204) {
+        alert("포스트가 성공적으로 삭제되었습니다.");
+        navigate("/"); // 홈으로 이동
+      }
+    } catch (error) {
+      console.error("Delete post failed:", error);
+      alert("포스트 삭제에 실패했습니다.");
+    }
+  };
+
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -183,22 +196,16 @@ const PostDetail = () => {
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded">
                 <button
-                  onClick={() => alert("Update clicked")}
+                  onClick={handleEditClick}
                   className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                 >
                   Update
                 </button>
                 <button
-                  onClick={() => alert("Delete clicked")}
+                  onClick={handleDeleteClick}
                   className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                 >
                   Delete
-                </button>
-                <button
-                  onClick={handleEditClick}
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                >
-                  Edit
                 </button>
               </div>
             )}
