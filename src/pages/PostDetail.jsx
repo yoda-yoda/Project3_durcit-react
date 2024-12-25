@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EmojiPicker from "emoji-picker-react";
-import {connectWebSocket, addEmoji, disconnectWebSocket, connectWebSocketEmoji} from "../utils/webSocket";
+import {
+  connectWebSocket,
+  addEmoji,
+  disconnectWebSocket,
+  connectWebSocketEmoji,
+} from "../utils/webSocket";
 import apiClient from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
@@ -21,24 +26,16 @@ const PostDetail = () => {
   const [likes, setLikes] = useState(0);
   const [reactions, setReactions] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [selectedMentions, setSelectedMentions] = useState([]);
   const [parentId, setParentId] = useState(null);
-
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedEmoji, setSelectedEmoji] = useState(null);
-  const [tags, setTags] = useState([]);
-  const navigate = useNavigate(); // useNavigate 훅 추가
-
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch post details
     fetchPostDetails();
-
-    // Connect WebSocket
     connectWebSocketEmoji(handleEmojiUpdate, postId);
 
     return () => {
@@ -46,37 +43,32 @@ const PostDetail = () => {
     };
   }, [postId]);
 
-  const handleAddMention = (mention) => {
-    setSelectedMentions((prev) => [...prev, mention]);
-  };
-
   const handleEditClick = () => {
-    setIsEditing(true); // 수정 모드로 전환
+    setIsEditing(true);
   };
 
   if (isEditing) {
-    // EditPost 컴포넌트를 렌더링하며 데이터 전달
     return <EditPost post={post} setIsEditing={setIsEditing} />;
   }
 
   const handleAddComment = async () => {
+    if (!checkAuth()) return;
+
     try {
       const response = await apiClient.post("/comments", {
         content: newComment,
-        postId: postId,
-        mentionList: [], // 멘션 리스트가 없으면 빈 배열 전달
-        parentId: parentId,
+        postId,
+        mentionList: [],
+        parentId,
       });
 
       const newCommentData = response.data.data;
 
-      // 댓글 리스트 업데이트
       setPost((prevPost) => ({
         ...prevPost,
         comments: [...prevPost.comments, newCommentData],
       }));
 
-      // 입력 필드 초기화
       setNewComment("");
       setParentId(null);
     } catch (error) {
@@ -86,6 +78,8 @@ const PostDetail = () => {
   };
 
   const handleToggleSuccess = (tagId, isFollowing) => {
+    if (!checkAuth()) return;
+
     setPost((prevPost) => ({
       ...prevPost,
       tags: prevPost.tags.map((tag) =>
@@ -94,39 +88,22 @@ const PostDetail = () => {
     }));
   };
 
-  const handleToggleFollow = async (tagId, isFollowing) => {
-    try {
-      await axios.delete(`http://localhost:8080/api/tags/${tagId}/unfollow`);
-
-
-      // 상태 업데이트
-      setPost((prevPost) => ({
-        ...prevPost,
-        tags: prevPost.tags.map((tag) =>
-          tag.id === tagId ? { ...tag, isFollowing: !isFollowing } : tag
-        ),
-      }));
-    } catch (error) {
-      console.error("Failed to toggle follow status:", error);
-    }
-  };
-
   const fetchPostDetails = async () => {
     try {
-      const memberId = localStorage.getItem("memberId"); // 로컬 스토리지에서 memberId 가져오기
-      const requestBody = memberId ? Number(memberId) : null; // memberId가 없으면 null로 처리
+      const memberId = localStorage.getItem("memberId");
+      const requestBody = memberId ? Number(memberId) : null;
 
-      const response = await axios.post(`http://localhost:8080/api/posts/${postId}`, requestBody, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:8080/api/posts/${postId}`,
+        requestBody,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       const data = response.data;
 
-      // 상태 업데이트
       setPost(data.data);
-      setTags(data.data.tags);
       setLikes(data.data.post.likes);
       setReactions(
         data.data.emojis.emojis.reduce((acc, emoji) => {
@@ -139,17 +116,14 @@ const PostDetail = () => {
     }
   };
 
-
   const handleEmojiUpdate = (updatedEmoji) => {
     const { emojis } = updatedEmoji;
 
-    // 서버에서 받은 새로운 상태로 reactions 업데이트
     if (!emojis || emojis.length === 0) {
       setReactions({});
       return;
     }
 
-    // 새로운 이모지 상태 적용
     const newReactions = emojis.reduce((acc, { emoji, count }) => {
       acc[emoji] = count;
       return acc;
@@ -162,14 +136,11 @@ const PostDetail = () => {
     if (!checkAuth()) return;
 
     try {
-      // POST 요청으로 좋아요 상태 토글
       const response = await apiClient.post(`/likes/${postId}/toggle`);
-
       if (!response.data) {
         throw new Error("Failed to toggle like");
       }
 
-      // 데이터 다시 로드
       await fetchPostDetails();
     } catch (error) {
       console.error("Error toggling like:", error);
@@ -178,49 +149,37 @@ const PostDetail = () => {
 
   const handleReaction = (emoji) => {
     if (!checkAuth()) return;
-    if (!emoji) {
-      console.error("Cannot add reaction: Emoji is undefined!");
-      return;
-    }
+    if (!emoji) return;
+
     addEmoji(postId, emoji);
   };
 
   const onEmojiClick = (emojiObject) => {
-    console.log("Selected Emoji Object:", emojiObject);
-    if (emojiObject && emojiObject.emoji) {
-      const emoji = emojiObject.emoji;
-      console.log("Emoji to send:", emoji);
-      handleReaction(emoji);
-    } else {
-      console.error("Failed to retrieve emoji from picker");
-    }
-    setShowEmojiPicker(false);
-  };
+    if (!emojiObject || !emojiObject.emoji) return;
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    handleReaction(emojiObject.emoji);
+    setShowEmojiPicker(false);
   };
 
   if (!post) {
     return <div>Loading...</div>;
   }
 
+  const isAuthor = localStorage.getItem("memberId") === String(post.post.authorId);
+
   return (
     <div className="min-h-screen p-6">
-      {/* Post Content */}
       <div className="bg-white p-4 rounded shadow mb-6">
         <div className="relative">
           <div className="absolute top-2 right-2">
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              &#8942;
-            </button>
+            {isAuthor && (
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                &#8942;
+              </button>
+            )}
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded">
                 <button
@@ -267,8 +226,6 @@ const PostDetail = () => {
           <p className="text-gray-700">{post.post.content}</p>
         </div>
 
-
-        {/* 태그 섹션 */}
         {post.tags && (
           <TagList
             tags={post.tags}
@@ -295,51 +252,53 @@ const PostDetail = () => {
           ))}
         </div>
 
-        <div className="mt-4">
-          <button
-            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="w-36 h-12 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300"
-          >
-            + Add a Reaction
-          </button>
-          {showEmojiPicker && (
-            <div className="mt-2">
-              <EmojiPicker onEmojiClick={onEmojiClick}/>
-            </div>
-          )}
-        </div>
+        {checkAuth() && (
+          <div className="mt-4">
+            <button
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="w-36 h-12 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300"
+            >
+              + Add a Reaction
+            </button>
+            {showEmojiPicker && (
+              <div className="mt-2">
+                <EmojiPicker onEmojiClick={onEmojiClick} />
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Add Comment Section */}
-      <div className="mb-4">
-        <MentionsInput
-          value={newComment}
-          onChange={setNewComment}
-          onAddMention={(mention) =>
-            setSelectedMentions((prev) => [...prev, mention])
-          }
-        />
-        <div className="flex justify-between items-center mt-2 gap-4">
-          <button
-            onClick={() => {
-              setNewComment("");
-              setSelectedMentions([]);
-              setParentId(null);
-            }}
-            className="px-4 py-2 text-gray-700 rounded shadow hover:bg-gray-300"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleAddComment}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded shadow hover:bg-gray-300"
-          >
-            {parentId ? "Reply" : "Comment"}
-          </button>
+      {checkAuth() && (
+        <div className="mb-4">
+          <MentionsInput
+            value={newComment}
+            onChange={setNewComment}
+            onAddMention={(mention) =>
+              setSelectedMentions((prev) => [...prev, mention])
+            }
+          />
+          <div className="flex justify-between items-center mt-2 gap-4">
+            <button
+              onClick={() => {
+                setNewComment("");
+                setSelectedMentions([]);
+                setParentId(null);
+              }}
+              className="px-4 py-2 text-gray-700 rounded shadow hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAddComment}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded shadow hover:bg-gray-300"
+            >
+              {parentId ? "Reply" : "Comment"}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Comments Section */}
       <CommentSection
         comments={post.comments || []}
         onReply={(id) => setParentId(id)}

@@ -98,6 +98,9 @@ export const disconnectWebSocket = () => {
   if (stompClient) {
     stompClient.disconnect(() => {
       console.log("WebSocket Disconnected");
+      // 로컬스토리지에서 로그인 정보 제거
+      localStorage.clear();
+      console.log("LocalStorage cleared");
     });
   }
 };

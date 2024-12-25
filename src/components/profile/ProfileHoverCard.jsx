@@ -10,7 +10,10 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
   const defaultImage = "/default-avatar.png"; // 대체 이미지 경로
 
   useEffect(() => {
-    // 팔로우 상태 확인 API 호출
+    // 로컬스토리지에 memberId가 없는 경우 API 호출하지 않음
+    const memberId = localStorage.getItem("memberId");
+    if (!memberId) return;
+
     const fetchFollowStatus = async () => {
       try {
         const response = await apiClient.get(`/follows`, {
@@ -26,6 +29,12 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
   }, [targetMemberId]);
 
   const handleFollowToggle = async () => {
+    const memberId = localStorage.getItem("memberId");
+    if (!memberId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
     try {
       await apiClient.post("/follows/toggle", { followeeId: targetMemberId });
       setIsFollowing(!isFollowing); // 상태를 토글
@@ -37,10 +46,16 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
   };
 
   const handleNewChat = async () => {
+    const memberId = localStorage.getItem("memberId");
+    if (!memberId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
     try {
       const response = await apiClient.post("/rooms", {
-        memberId: localStorage.getItem("memberId"),
-        targetMemberId: targetMemberId,
+        memberId,
+        targetMemberId,
       });
 
       const chatRoom = response.data;
@@ -71,7 +86,8 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
 
       {/* 호버 시 표시될 카드 */}
       {isHovered && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 top-14 w-60 p-4 bg-white border rounded-lg shadow-lg z-10">
+        <div
+          className="absolute left-1/2 transform -translate-x-1/2 top-14 w-60 p-4 bg-white border rounded-lg shadow-lg z-10">
           {/* 유저 정보 */}
           <div className="flex items-center space-x-4 mb-4">
             <img
@@ -87,20 +103,24 @@ const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMe
 
           {/* 버튼들 */}
           <div className="flex justify-end space-x-2">
-            <button
-              onClick={handleFollowToggle}
-              className={`px-4 py-2 text-white text-sm rounded transition ${
-                isFollowing ? "bg-blue-500 hover:bg-blue-600" : "bg-red-500 hover:bg-red-600"
-              }`}
-            >
-              {isFollowing ? "Unfollow" : "Follow"}
-            </button>
-            <button
-              onClick={handleNewChat}
-              className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition"
-            >
-              New Chat
-            </button>
+            {localStorage.getItem("memberId") && (
+              <>
+                <button
+                  onClick={handleFollowToggle}
+                  className={`px-4 py-2 text-white text-sm rounded transition ${
+                    isFollowing ? "bg-blue-500 hover:bg-blue-600" : "bg-red-500 hover:bg-red-600"
+                  }`}
+                >
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </button>
+                <button
+                  onClick={handleNewChat}
+                  className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition"
+                >
+                  New Chat
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

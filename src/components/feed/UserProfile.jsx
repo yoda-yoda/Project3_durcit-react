@@ -9,6 +9,7 @@ const UserProfile = ({ userId }) => {
   const [isFollowing, setIsFollowing] = useState(false);
 
   const defaultImage = "/default-avatar.png"; // 기본 이미지 경로
+  const isLoggedIn = !!localStorage.getItem("memberId"); // 로그인 상태 확인
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -16,11 +17,13 @@ const UserProfile = ({ userId }) => {
         const response = await axios.get(`http://localhost:8080/api/feeds/users/${userId}`);
         setUserInfo(response.data.data);
 
-        // 팔로우 상태 확인
-        const followResponse = await apiClient.get(`/follows`, {
-          params: { followeeId: userId },
-        });
-        setIsFollowing(followResponse.data.data);
+        // 로그인된 경우에만 팔로우 상태 확인
+        if (isLoggedIn) {
+          const followResponse = await apiClient.get(`/follows`, {
+            params: { followeeId: userId },
+          });
+          setIsFollowing(followResponse.data.data);
+        }
       } catch (err) {
         setError("Failed to load user info or follow status.");
         console.error(err);
@@ -30,9 +33,11 @@ const UserProfile = ({ userId }) => {
     };
 
     fetchUserInfo();
-  }, [userId]);
+  }, [userId, isLoggedIn]);
 
   const handleFollowToggle = async () => {
+    if (!isLoggedIn) return;
+
     try {
       await apiClient.post("/follows/toggle", { followeeId: userId });
       setIsFollowing(!isFollowing);
@@ -44,6 +49,8 @@ const UserProfile = ({ userId }) => {
   };
 
   const handleNewChat = async () => {
+    if (!isLoggedIn) return;
+
     try {
       const response = await apiClient.post("/rooms", {
         memberId: localStorage.getItem("memberId"),
@@ -80,7 +87,8 @@ const UserProfile = ({ userId }) => {
             className="w-20 h-20 rounded-full border border-gray-200"
           />
           <div>
-            <h2 className="text-3xl font-bold">{profile.nickname}
+            <h2 className="text-3xl font-bold">
+              {profile.nickname}
               {/* 인증 마크 */}
               {profile.role === "manager" && (
                 <span
@@ -92,10 +100,8 @@ const UserProfile = ({ userId }) => {
               )}
             </h2>
             <p className="text-sm text-gray-500">@{profile.username}</p>
-            <p className="text-gray-700 mt-2">{bio || "This user has no bio yet."}</p>
+            <p className="text-gray-700 mt-2">{profile.bio || "This user has no bio yet."}</p>
           </div>
-
-
         </div>
 
         {/* 오른쪽: 통계 정보 */}
@@ -116,22 +122,24 @@ const UserProfile = ({ userId }) => {
       </div>
 
       {/* 액션 버튼들 */}
-      <div className="mt-6 flex justify-end space-x-4">
-        <button
-          onClick={handleFollowToggle}
-          className={`px-4 py-2 text-white text-sm rounded transition ${
-            isFollowing ? "bg-blue-500 hover:bg-blue-600" : "bg-red-500 hover:bg-red-600"
-          }`}
-        >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </button>
-        <button
-          onClick={handleNewChat}
-          className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition"
-        >
-          New Chat
-        </button>
-      </div>
+      {isLoggedIn && (
+        <div className="mt-6 flex justify-end space-x-4">
+          <button
+            onClick={handleFollowToggle}
+            className={`px-4 py-2 text-white text-sm rounded transition ${
+              isFollowing ? "bg-blue-500 hover:bg-blue-600" : "bg-red-500 hover:bg-red-600"
+            }`}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
+          <button
+            onClick={handleNewChat}
+            className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition"
+          >
+            New Chat
+          </button>
+        </div>
+      )}
     </div>
   );
 };
