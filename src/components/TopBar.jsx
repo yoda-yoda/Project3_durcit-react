@@ -7,6 +7,7 @@ import NotificationModal from "./NotificationModal";
 import SearchBar from "./SearchBar";
 import { useWebSocket } from "../context/WebSocketContext";
 import apiClient from "../utils/apiClient";
+import {toast} from "react-toastify";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
@@ -14,6 +15,7 @@ const TopBar = () => {
     const { notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout } = useWebSocket();
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
+    const [hasShownToast, setHasShownToast] = useState(false);
 
     // 알림 데이터를 가져오는 로직
     const fetchNotifications = async () => {
@@ -39,6 +41,17 @@ const TopBar = () => {
     useEffect(() => {
         const count = notifications.filter((notification) => !notification.confirmed).length;
         setUnreadCount(count);
+        if (count > 0 && !hasShownToast) {
+            toast.info(`${count} 개의 읽지 않은 알람이 있습니다!`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            setHasShownToast(true);
+        }
     }, [notifications]);
 
     const handleLogout = async () => {
