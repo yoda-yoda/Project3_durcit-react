@@ -94,7 +94,7 @@ const PostDetail = () => {
       const requestBody = memberId ? Number(memberId) : null;
 
       const response = await axios.post(
-        `http://localhost:8080/api/posts/${postId}`,
+        `/sp/api/posts/${postId}`,
         requestBody,
         {
           headers: { "Content-Type": "application/json" },

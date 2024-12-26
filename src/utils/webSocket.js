@@ -2,7 +2,7 @@ import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { toast } from "react-toastify";
 
-const socketUrl = "http://localhost:8080/ws"; // WebSocket 서버 URL
+const socketUrl = "/sp/ws"; // WebSocket 서버 URL
 
 let stompClient = null;
 export const connectWebSocketEmoji = (onMessage, postId) => {

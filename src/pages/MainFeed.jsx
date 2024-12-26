@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const MainFeed = () => {
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    "http://localhost:8080/api/posts/pages"
+    "/sp/api/posts/pages"
   );
   const [selectedOption, setSelectedOption] = useState("Best");
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080/api/members", // API의 기본 URL
+  baseURL: "/sp/api/members", // API의 기본 URL
   timeout: 10000, // 요청 타임아웃 설정 (10초)
 });
 

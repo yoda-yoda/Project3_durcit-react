@@ -17,7 +17,7 @@ const TagSearchPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.get("http://localhost:8080/api/posts/search/tags", {
+      const response = await axios.get("/sp/api/posts/search/tags", {
         params: { tag, page, size: PAGE_SIZE },
       });
       const newPosts = response.data.data.content;

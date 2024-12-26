@@ -7,7 +7,7 @@ const TagFeed = () => {
   const memberId = localStorage.getItem("memberId");
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    `http://localhost:8080/api/posts/pages/tags?memberId=${memberId}` // 태그 기반 API 엔드포인트
+    `/sp/api/posts/pages/tags?memberId=${memberId}` // 태그 기반 API 엔드포인트
   );
   const navigate = useNavigate();
 

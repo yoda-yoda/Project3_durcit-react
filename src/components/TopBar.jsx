@@ -7,15 +7,18 @@ import NotificationModal from "./NotificationModal";
 import SearchBar from "./SearchBar";
 import { useWebSocket } from "../context/WebSocketContext";
 import apiClient from "../utils/apiClient";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import { checkAuth } from "../utils/authUtils";
 
 const TopBar = () => {
     const [isNotificationOpen, setNotificationOpen] = useState(false); // 알림 모달 상태
     const [isLoginOpen, setLoginOpen] = useState(false);
-    const { notifications, setNotifications, setIsLoggedIn, isLoggedIn, logout } = useWebSocket();
+    const { notifications, setNotifications, logout } = useWebSocket();
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
     const [hasShownToast, setHasShownToast] = useState(false);
+
+    const isLoggedIn = checkAuth(); // 로그인 상태 확인
 
     // 알림 데이터를 가져오는 로직
     const fetchNotifications = async () => {
@@ -60,7 +63,7 @@ const TopBar = () => {
             const memberId = localStorage.getItem("memberId");
 
             if (refreshToken) {
-                await axios.post("http://localhost:8080/auth/logout", {
+                await axios.post("/sp/auth/logout", {
                     refreshToken,
                     memberId,
                 });

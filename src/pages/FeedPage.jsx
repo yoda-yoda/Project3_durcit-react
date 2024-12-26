@@ -13,7 +13,7 @@ const FeedPage = () => {
   useEffect(() => {
     const fetchFeedPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/feed/${userId}`);
+        const response = await axios.get(`/sp/api/feed/${userId}`);
         setFeedPosts(response.data.data);
       } catch (err) {
         setError("Failed to load feed. Please try again later.");
