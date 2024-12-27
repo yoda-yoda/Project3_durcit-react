@@ -1,59 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import MainFeedTopBar from "../components/MainFeedTopbar";
-import useFetchPosts from "../hooks/useFetchPosts";
 import { useNavigate } from "react-router-dom";
 
-const MainFeed = () => {
-  const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
-    "Best",
-    "/sp/api/posts/pages"
-  );
-  const [selectedOption, setSelectedOption] = useState("Best");
+const TagSearchPage = () => {
+  const { tag } = useParams(); // URL에서 태그 가져오기
+  const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const PAGE_SIZE = 10;
+
+  const fetchPosts = async () => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get("/sp/api/posts/search/tags", {
+        params: { tag, page, size: PAGE_SIZE },
+      });
+      const newPosts = response.data.data.content;
+
+      setPosts((prev) => [...prev, ...newPosts]);
+      setPage((prev) => prev + 1);
+
+      if (newPosts.length < PAGE_SIZE) setHasMore(false); // 더 이상 데이터가 없는 경우 처리
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
+      fetchPosts();
+    }
+  };
 
   useEffect(() => {
-    // 초기 데이터 로드 및 스크롤 이벤트 등록
-    loadMorePosts(); // 첫 페이지 데이터 로드
-
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100
-      ) {
-        loadMorePosts();
-      }
-    };
-
+    // 페이지가 로드되었을 때 및 스크롤 이벤트 등록
+    fetchPosts();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMorePosts]); // loadMorePosts 함수에 의존
-
-  // 카테고리 변경 핸들러
-  const handleCategoryChange = (event) => {
-    const newCategory = event.target.value;
-    setSelectedOption(newCategory); // 선택된 옵션 상태 업데이트
-    setCategory(newCategory); // useFetchPosts에서 카테고리 변경
-  };
+  }, []);
 
   return (
     <div>
-      <MainFeedTopBar />
-      <h1 className="text-2xl font-bold mb-4 mt-6">Welcome to the Game Community</h1>
-
-      {/* 드롭다운 메뉴 */}
-      <div className="mb-6">
-        <select
-          value={selectedOption}
-          onChange={handleCategoryChange} // 수정된 부분
-          className="p-2 bg-white rounded text-gray-700"
-        >
-          <option value="Best">Best</option>
-          <option value="Hot">Hot</option>
-          <option value="New">New</option>
-        </select>
-      </div>
-
+      <h1 className="text-2xl font-bold mb-4 mt-6">Posts tagged with #{tag}</h1>
       <div>
         {posts.map((post) => (
           <div
@@ -94,19 +92,17 @@ const MainFeed = () => {
         ))}
       </div>
 
-      {/* 로딩 UI */}
       {isLoading && (
         <div className="flex justify-center items-center my-6">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-500"></div>
         </div>
       )}
 
-      {/* 더 이상 데이터가 없을 때 메시지 */}
-      {!isLoading && !hasMore && (
+      {!isLoading && !hasMore && posts.length > 0 && (
         <div className="text-center text-gray-500 my-6">No more posts</div>
       )}
     </div>
   );
 };
 
-export default MainFeed;
+export default TagSearchPage;

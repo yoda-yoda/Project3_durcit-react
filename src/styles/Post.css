@@ -1,0 +1,46 @@
+/* Post.css */
+.post-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.post-content h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.post-content p {
+    margin: 5px 0 10px;
+    font-size: 14px;
+}
+
+.emoji-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.emoji-add-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.emoji-picker-container {
+    position: relative;
+    margin-top: 10px;
+}
