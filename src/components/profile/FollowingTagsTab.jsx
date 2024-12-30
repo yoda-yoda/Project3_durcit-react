@@ -25,11 +25,11 @@ const FollowingTagsTab = () => {
     fetchFollowingTags();
   }, []);
 
-  const handleUnfollow = async (tagId) => {
+  const handleUnfollow = async (tag, tagId) => {
     try {
       const memberId = localStorage.getItem("memberId");
       await apiClient.post(`/tag-follow/${memberId}/post`, {
-        tag: tagId,
+        tag: tag,
       });
       // 태그를 리스트에서 제거
       setTags((prevTags) => prevTags.filter((tag) => tag.id !== tagId));
@@ -64,7 +64,7 @@ const FollowingTagsTab = () => {
                   onClick={() => handleTagClick(tag.tag)}
             >#{tag.tag}</span>
             <button
-              onClick={() => handleUnfollow(tag.id)}
+              onClick={() => handleUnfollow(tag.tag, tag.id)}
               className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
             >
               Unfollow
