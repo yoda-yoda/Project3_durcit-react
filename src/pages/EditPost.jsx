@@ -72,25 +72,24 @@ const EditPost = ({ post, setIsEditing }) => {
       // 게시물 업데이트 요청
       await apiClient.put(`/posts/${postId}`, postUpdateCombinedRequest);
 
-      // 파일 업로드 요청
-      const formData = new FormData();
-      formData.append("postId", postId);
+      // 파일 업로드가 필요한 경우만 요청 수행
+      if (imagesToDelete.length > 0 || attachments.length > 0) {
+        const formData = new FormData();
+        formData.append("postId", postId);
 
-      // 삭제할 이미지 ID
-      if (imagesToDelete.length > 0) {
-        imagesToDelete.forEach((id) => formData.append("imageIdsToDelete", id));
-      } else {
-        formData.append("imageIdsToDelete", []);
+        // 삭제할 이미지 ID 추가
+        if (imagesToDelete.length > 0) {
+          imagesToDelete.forEach((id) => formData.append("imageIdsToDelete", id));
+        }
+
+        // 새로 추가된 파일 추가
+        if (attachments.length > 0) {
+          attachments.forEach((file) => formData.append("newFiles", file));
+        }
+
+        // 파일 업로드 요청
+        await apiClient.put("/upload/update", formData);
       }
-
-      // 새로 추가된 파일
-      if (existingImages.length > 0) {
-        attachments.forEach((file) => formData.append("newFiles", file));
-      } else {
-        formData.append("newFiles", null);
-      }
-
-      await apiClient.put("/upload/update", formData);
 
       alert("Post updated successfully!");
       navigate(`/`); // 상세 페이지로 이동

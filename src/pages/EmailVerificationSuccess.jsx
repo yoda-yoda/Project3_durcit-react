@@ -16,7 +16,7 @@ const EmailVerificationSuccess = () => {
     if (token) {
       // Send token to backend
       axios
-        .post("http://localhost:8080/auth/verify", { token })
+        .post("/sp/auth/verify", { token })
         .then((response) => {
           console.log("Verification successful:", response.data);
           setStatusMessage("Your email has been successfully verified. Thank you!");

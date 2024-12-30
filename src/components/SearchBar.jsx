@@ -16,7 +16,7 @@ const SearchBar = ({ placeholder = "Search Durcit" }) => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:8080/api/search`, {
+      const response = await axios.get(`/sp/api/search`, {
         params: { query },
       });
       setSearchResults(response.data.data || []);

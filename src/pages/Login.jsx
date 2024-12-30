@@ -19,7 +19,7 @@ const Login = ({ isOpen, onClose }) => {
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", {
+            const response = await axios.post("/sp/auth/login", {
                 email,
                 password,
             });
@@ -58,19 +58,19 @@ const Login = ({ isOpen, onClose }) => {
               <h1 className="text-2xl font-bold mb-4 text-center">Social Login</h1>
               <div className="flex flex-col space-y-4 items-center">
                   <a
-                    href="http://localhost:8080/oauth2/authorization/google"
+                    href="/sp/oauth2/authorization/google"
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 "
                   >
                       Google 로그인
                   </a>
                   <a
-                    href="http://localhost:8080/oauth2/authorization/kakao"
+                    href="/sp/oauth2/authorization/kakao"
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500"
                   >
                       Kakao 로그인
                   </a>
                   <a
-                    href="http://localhost:8080/oauth2/authorization/naver"
+                    href="/sp/oauth2/authorization/naver"
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600"
                   >
                       Naver 로그인

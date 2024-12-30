@@ -45,7 +45,7 @@ const Register = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/auth/register",
+        "/sp/auth/register",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } } // 파일 업로드 설정
       );

@@ -14,7 +14,7 @@ const UserProfile = ({ userId }) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/feeds/users/${userId}`);
+        const response = await axios.get(`/sp/api/feeds/users/${userId}`);
         setUserInfo(response.data.data);
 
         // 로그인된 경우에만 팔로우 상태 확인
