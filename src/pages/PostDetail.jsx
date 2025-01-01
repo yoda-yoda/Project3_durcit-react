@@ -10,14 +10,13 @@ import {
   disconnectWebSocket,
   connectWebSocketEmoji,
 } from "../utils/webSocket";
-import apiClient from "../utils/apiClient";
+import { apiClient, apiClientNoAuth } from "../utils/apiClient";
 import { checkAuth } from "../utils/authUtils";
 import ProfileHoverCard from "../components/profile/ProfileHoverCard";
 import CommentSection from "../components/comment/CommentSection";
 import MentionsInput from "../components/comment/MentionsInput";
 import TagList from "../components/post/TagList";
 import ImageSlider from "../components/post/ImageSlider";
-import axios from "axios";
 import EditPost from "./EditPost";
 
 const PostDetail = () => {
@@ -93,8 +92,8 @@ const PostDetail = () => {
       const memberId = localStorage.getItem("memberId");
       const requestBody = memberId ? Number(memberId) : null;
 
-      const response = await axios.post(
-        `/sp/api/posts/${postId}`,
+      const response = await apiClientNoAuth.post(
+        `/api/posts/${postId}`,
         requestBody,
         {
           headers: { "Content-Type": "application/json" },

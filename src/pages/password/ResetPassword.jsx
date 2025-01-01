@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {

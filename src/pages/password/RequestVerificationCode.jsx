@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../utils/apiClient"; // 유틸리티 클래스 가져오기
+import { apiClient } from "../../utils/apiClient";
 
 const RequestVerificationCode = () => {
   const [timer, setTimer] = useState(300); // 5분 타이머 (300초)

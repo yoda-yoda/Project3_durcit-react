@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const ProfileHoverCard = ({ profileImage, username, nickname, onFollow, targetMemberId }) => {
   const [isHovered, setIsHovered] = useState(false);

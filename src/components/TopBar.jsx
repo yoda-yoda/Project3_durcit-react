@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Login from "../pages/Login";
-import axios from "axios";
 import NotificationModal from "./NotificationModal";
 import SearchBar from "./SearchBar";
 import { useWebSocket } from "../context/WebSocketContext";
-import apiClient from "../utils/apiClient";
+import { apiClient, apiClientNoAuth } from "../utils/apiClient";
 import { toast } from "react-toastify";
 import { checkAuth } from "../utils/authUtils";
 
@@ -63,7 +62,7 @@ const TopBar = () => {
             const memberId = localStorage.getItem("memberId");
 
             if (refreshToken) {
-                await axios.post("/sp/auth/logout", {
+                await apiClientNoAuth.post("/auth/logout", {
                     refreshToken,
                     memberId,
                 });

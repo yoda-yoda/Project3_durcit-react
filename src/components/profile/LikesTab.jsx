@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const LikesTab = () => {
   const [likedPosts, setLikedPosts] = useState([]);

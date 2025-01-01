@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -44,8 +44,8 @@ const Register = () => {
         formDataToSend.append("profileImage", profileImage); // 이미지 추가
       }
 
-      const response = await axios.post(
-        "/sp/auth/register",
+      const response = await apiClientNoAuth.post(
+        "/auth/register",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } } // 파일 업로드 설정
       );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProfileHoverCard from "./ProfileHoverCard";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const FollowersTab = () => {
   const [followers, setFollowers] = useState([]);

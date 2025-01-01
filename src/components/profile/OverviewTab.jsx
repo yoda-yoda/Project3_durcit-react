@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const OverviewTab = () => {
   const [bio, setBio] = useState("");

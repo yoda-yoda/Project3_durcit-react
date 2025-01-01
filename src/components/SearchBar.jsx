@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { FiSearch } from "react-icons/fi";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const SearchBar = ({ placeholder = "Search Durcit" }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,7 +16,7 @@ const SearchBar = ({ placeholder = "Search Durcit" }) => {
     }
 
     try {
-      const response = await axios.get(`/sp/api/search`, {
+      const response = await apiClientNoAuth.get(`/api/search`, {
         params: { query },
       });
       setSearchResults(response.data.data || []);

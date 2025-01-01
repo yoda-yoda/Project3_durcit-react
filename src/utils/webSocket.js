@@ -2,7 +2,7 @@ import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { toast } from "react-toastify";
 
-const socketUrl = "/sp/ws"; // WebSocket 서버 URL
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
 
 let stompClient = null;
 export const connectWebSocketEmoji = (onMessage, postId) => {
@@ -21,30 +21,40 @@ export const connectWebSocketEmoji = (onMessage, postId) => {
   })
 }
 
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 10;
+const reconnectDelay = 10000;
+
 export const connectWebSocketPush = (onMessage, userId) => {
   const socket = new SockJS(socketUrl);
   stompClient = Stomp.over(socket);
 
-  stompClient.connect({}, () => {
-    console.log("WebSocket Connected via SockJS");
+  stompClient.connect(
+    {},
+    () => {
+      console.log("WebSocket Connected via SockJS");
+      reconnectAttempts = 0; // 연결 성공 시 재연결 시도 횟수 초기화
 
-    stompClient.subscribe(`/topic/notification/${userId}`, (message) => {
-      const data = JSON.parse(message.body);
-      console.log(`Received messages userId, ${userId}:`, data);
-      toast.info(data.message, {
-        position: "top-right",
-        autoClose: 5000, // 5초 후 자동 닫힘
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+      stompClient.subscribe(`/topic/notification/${userId}`, (message) => {
+        const data = JSON.parse(message.body);
+        console.log(`Received messages userId, ${userId}:`, data);
+
+        // 전달받은 메시지를 처리
+        if (onMessage) onMessage(data);
       });
-
-      if (onMessage) onMessage(data);
-    });
-  })
-}
+    },
+    (error) => {
+      console.error("WebSocket Connection Error:", error);
+      if (reconnectAttempts < maxReconnectAttempts) {
+        reconnectAttempts++;
+        console.log(`Reconnecting... Attempt ${reconnectAttempts}/${maxReconnectAttempts}`);
+        setTimeout(() => connectWebSocketPush(onMessage, userId), reconnectDelay);
+      } else {
+        console.error("Max reconnect attempts reached. Giving up.");
+      }
+    }
+  );
+};
 
 export const connectWebSocket = (onMessage, roomId) => {
   const socket = new SockJS(socketUrl); // SockJS를 사용하여 WebSocket 생성

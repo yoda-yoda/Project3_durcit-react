@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import apiClient from "../../utils/apiClient";
-import axios from "axios";
+import {apiClient, apiClientNoAuth} from "../../utils/apiClient";
 
 const UserProfile = ({ userId }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -14,7 +13,7 @@ const UserProfile = ({ userId }) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`/sp/api/feeds/users/${userId}`);
+        const response = await apiClientNoAuth.get(`/api/feeds/users/${userId}`);
         setUserInfo(response.data.data);
 
         // 로그인된 경우에만 팔로우 상태 확인

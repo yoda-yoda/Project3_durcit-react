@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const ChatRoomList = ({ onSelectChatRoom, onClose }) => {
   const [chatRooms, setChatRooms] = useState([]);

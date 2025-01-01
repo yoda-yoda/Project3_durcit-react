@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import { setTokens } from "../store/authSlice";
 import {useWebSocket} from "../context/WebSocketContext";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const Login = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
@@ -17,9 +17,10 @@ const Login = ({ isOpen, onClose }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
+        console.log(process.env.REACT_APP_GOOGLE_OAUTH_URL);
 
         try {
-            const response = await axios.post("/sp/auth/login", {
+            const response = await apiClientNoAuth.post("/auth/login", {
                 email,
                 password,
             });
@@ -40,7 +41,7 @@ const Login = ({ isOpen, onClose }) => {
         }
     };
 
-    if (!isOpen) return null; // Do not render anything if the modal is not open
+    if (!isOpen) return null;
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -58,19 +59,19 @@ const Login = ({ isOpen, onClose }) => {
               <h1 className="text-2xl font-bold mb-4 text-center">Social Login</h1>
               <div className="flex flex-col space-y-4 items-center">
                   <a
-                    href="/sp/oauth2/authorization/google"
+                    href={process.env.REACT_APP_GOOGLE_OAUTH_URL}
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 "
                   >
                       Google 로그인
                   </a>
                   <a
-                    href="/sp/oauth2/authorization/kakao"
+                    href={process.env.REACT_APP_KAKAO_OAUTH_URL}
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500"
                   >
                       Kakao 로그인
                   </a>
                   <a
-                    href="/sp/oauth2/authorization/naver"
+                    href={process.env.REACT_APP_NAVER_OAUTH_URL}
                     className="flex justify-center items-center min-w-36 px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600"
                   >
                       Naver 로그인

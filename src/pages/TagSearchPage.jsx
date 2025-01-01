@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const TagSearchPage = () => {
   const { tag } = useParams(); // URL에서 태그 가져오기
@@ -17,7 +17,7 @@ const TagSearchPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.get("/sp/api/posts/search/tags", {
+      const response = await apiClientNoAuth.get("/api/posts/search/tags", {
         params: { tag, page, size: PAGE_SIZE },
       });
       const newPosts = response.data.data.content;

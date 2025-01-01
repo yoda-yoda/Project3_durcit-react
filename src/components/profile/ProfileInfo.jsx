@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 import NicknameModal from "./NicknameModal";
 import BioUpdateModal from "./BioUpdateModal";
 

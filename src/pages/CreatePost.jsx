@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate import
-import apiClient from "../utils/apiClient";
+import { apiClient } from "../utils/apiClient";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");

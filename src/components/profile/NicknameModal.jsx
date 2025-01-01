@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const NicknameModal = ({ currentNickname, onClose, onNicknameChange }) => {
   const [nickname, setNickname] = useState(currentNickname || "");

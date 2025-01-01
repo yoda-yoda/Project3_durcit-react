@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes, FaArrowLeft } from "react-icons/fa";
 import { sendMessage, connectWebSocket, disconnectWebSocket } from "../../utils/webSocket";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const ChatWindow = ({ selectedChat, onClose, onBack }) => {
   const [message, setMessage] = useState("");

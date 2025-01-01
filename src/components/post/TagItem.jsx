@@ -1,5 +1,5 @@
 import React from "react";
-import apiClient from "../../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
 const TagItem = ({ tag, onToggleSuccess }) => {
   const handleToggleFollow = async () => {

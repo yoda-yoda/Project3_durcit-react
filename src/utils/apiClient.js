@@ -1,12 +1,13 @@
 import axios from "axios";
 
-// Axios 인스턴스 생성
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const NO_AUTH_BASE_URL = process.env.REACT_APP_NO_AUTH_BASE_URL;
+
 const apiClient = axios.create({
-  baseURL: "/sp/api/members", // API의 기본 URL
-  timeout: 10000, // 요청 타임아웃 설정 (10초)
+  baseURL: BASE_URL,
+  timeout: 10000,
 });
 
-// 요청 인터셉터: 토큰 추가
 apiClient.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -27,20 +28,33 @@ apiClient.interceptors.request.use(
   }
 );
 
-// 응답 인터셉터: 필요 시 추가 처리 가능
 apiClient.interceptors.response.use(
   (response) => {
-    // 응답 성공 시 처리
     return response;
   },
   (error) => {
-    // 응답 오류 시 처리
     if (error.response && error.response.status === 401) {
-      // 인증 실패 처리 (예: 토큰 만료 시 로그아웃 또는 갱신 로직 추가)
+      alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+      localStorage.clear();
       console.error("Authentication failed. Please login again.");
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }
 );
 
-export default apiClient;
+const apiClientNoAuth = axios.create({
+  baseURL: NO_AUTH_BASE_URL,
+  timeout: 10000,
+});
+
+apiClientNoAuth.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export { apiClient, apiClientNoAuth };

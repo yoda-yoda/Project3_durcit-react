@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate import
-import apiClient from "../../utils/apiClient";
-
+import { apiClient } from "../../utils/apiClient";
 const PostsTab = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

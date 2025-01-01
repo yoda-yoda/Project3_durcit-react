@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import MainFeedTopBar from "../components/MainFeedTopbar";
 import useFetchPosts from "../hooks/useFetchPosts";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +7,7 @@ import PostCard from "../components/post/PostCard";
 const MainFeed = () => {
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    "/sp/api/posts/pages"
+    "/api/posts/pages"
   );
   const [selectedOption, setSelectedOption] = useState("Best");
   const navigate = useNavigate();

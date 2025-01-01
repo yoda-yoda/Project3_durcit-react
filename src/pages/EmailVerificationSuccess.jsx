@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const EmailVerificationSuccess = () => {
   const location = useLocation();
@@ -15,8 +15,8 @@ const EmailVerificationSuccess = () => {
 
     if (token) {
       // Send token to backend
-      axios
-        .post("/sp/auth/verify", { token })
+      apiClientNoAuth
+        .post("/auth/verify", { token })
         .then((response) => {
           console.log("Verification successful:", response.data);
           setStatusMessage("Your email has been successfully verified. Thank you!");

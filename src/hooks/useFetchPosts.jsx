@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const useFetchPosts = (initialCategory, endpoint) => {
   const [posts, setPosts] = useState([]);
@@ -11,7 +11,7 @@ const useFetchPosts = (initialCategory, endpoint) => {
 
   const fetchPosts = async (currentPage, currentCategory) => {
     try {
-      const response = await axios.get(endpoint, {
+      const response = await apiClientNoAuth.get(endpoint, {
         params: {
           page: currentPage,
           size: PAGE_SIZE,

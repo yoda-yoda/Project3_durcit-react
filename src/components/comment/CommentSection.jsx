@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProfileHoverCard from "../profile/ProfileHoverCard";
-import apiClient from "../../utils/apiClient"; // apiClient 임포트
+import { apiClient } from "../../utils/apiClient";
 
 const CommentSection = ({ comments, onReply }) => {
   const [commentTree, setCommentTree] = useState([]);

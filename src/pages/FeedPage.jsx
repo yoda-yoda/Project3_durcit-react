@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import UserProfile from "../components/feed/UserProfile";
+import {apiClientNoAuth} from "../utils/apiClient";
 
 const FeedPage = () => {
   const [feedPosts, setFeedPosts] = useState([]);
@@ -13,7 +13,7 @@ const FeedPage = () => {
   useEffect(() => {
     const fetchFeedPosts = async () => {
       try {
-        const response = await axios.get(`/sp/api/feed/${userId}`);
+        const response = await apiClientNoAuth.get(`/api/feed/${userId}`);
         setFeedPosts(response.data.data);
       } catch (err) {
         setError("Failed to load feed. Please try again later.");

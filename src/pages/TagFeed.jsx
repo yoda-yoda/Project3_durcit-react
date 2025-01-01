@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import useFetchPosts from "../hooks/useFetchPosts";
 import MainFeedTopBar from "../components/MainFeedTopbar";
 import PostCard from "../components/post/PostCard";
@@ -8,13 +7,11 @@ const TagFeed = () => {
   const memberId = localStorage.getItem("memberId");
   const { posts, isLoading, hasMore, loadMorePosts, setCategory } = useFetchPosts(
     "Best",
-    `/sp/api/posts/pages/tags?memberId=${memberId}` // 태그 기반 API 엔드포인트
+    `/api/posts/pages/tags?memberId=${memberId}`
   );
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // 초기 데이터 로드 및 스크롤 이벤트 등록
-    loadMorePosts(); // 첫 페이지 데이터 로드
+    loadMorePosts();
 
     const handleScroll = () => {
       if (
