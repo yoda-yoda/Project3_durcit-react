@@ -1,9 +1,17 @@
-# Durcit: Reddit을 모티브로 한 게임 커뮤니티 플랫폼
+# 3차 프로젝트 - **Durcit 팀프로젝트 (durckit team project)**
 
-**Durcit**은 Reddit에서 영감을 받아 만들어진 게임 커뮤니티 플랫폼으로, 게이머들이 활발하게 소통하고 콘텐츠를 공유할 수 있는 공간입니다. 다양한 기능을 통해 사용자가 더 편리하고 재미있게 커뮤니티 활동을 즐길 수 있도록 설계되었습니다.
+## 💡 팀(팀명:질수없조) 프로젝트
+
+<img width="199" height="231" alt="durcit-removebg 1" src="https://github.com/user-attachments/assets/234fc327-894c-4709-86c8-553825848fdc" />
+
+메인 페이지: [https://durcit.site](https://durcit.site) (현재는 운영이 닫힌 상태)  
+어드민 페이지: [https://admin.durcit.site](https://admin.durcit.site) (현재는 운영이 닫힌 상태)
+
+<br><br>
 
 ---
-### 리포지터리 링크
+
+## 리포지터리 링크
 
 * 소개 링크: https://github.com/yoda-yoda/Project3_durcit-overview  
 * 스프링: https://github.com/yoda-yoda/Project3_durcit-spring  
@@ -11,54 +19,222 @@
 * 리액트(관리자 기능) : https://github.com/yoda-yoda/Project3_durcit-admin  
 * 배포 : https://github.com/yoda-yoda/Project3_spring-deploy  
 
+<br><br>
 
 ---
+## 개요
+
+<details>
+<summary> ppt 이미지로 보기 </summary>
+
+![pptImage](./assets/images/durcit-ppt1.png)
+![pptImage](./assets/images/durcit-ppt2.png)
+![pptImage](./assets/images/durcit-ppt3.png)
+![pptImage](./assets/images/durcit-ppt4.png)
+![pptImage](./assets/images/durcit-ppt5.png)
+![pptImage](./assets/images/durcit-ppt6.png)
+![pptImage](./assets/images/durcit-ppt7.png)
+![pptImage](./assets/images/durcit-ppt8.png)
+![pptImage](./assets/images/durcit-ppt9.png)
+![pptImage](./assets/images/durcit-ppt10.png)
+![pptImage](./assets/images/durcit-ppt11.png)
+![pptImage](./assets/images/durcit-ppt12.png)
+![pptImage](./assets/images/durcit-ppt13.png)
+![pptImage](./assets/images/durcit-ppt14.png)
+![pptImage](./assets/images/durcit-ppt15.png)
+![pptImage](./assets/images/durcit-ppt16.png)
+![pptImage](./assets/images/durcit-ppt17.png)
+![pptImage](./assets/images/durcit-ppt18.png)
+![pptImage](./assets/images/durcit-ppt19.png)
+![pptImage](./assets/images/durcit-ppt20.png)
+![pptImage](./assets/images/durcit-ppt21.png)
+![pptImage](./assets/images/durcit-ppt22.png)
+![pptImage](./assets/images/durcit-ppt23.png)
+![pptImage](./assets/images/durcit-ppt24.png)
+![pptImage](./assets/images/durcit-ppt25.png)
+![pptImage](./assets/images/durcit-ppt26.png)
+![pptImage](./assets/images/durcit-ppt27.png)
+![pptImage](./assets/images/durcit-ppt28.png)
+![pptImage](./assets/images/durcit-ppt29.png)
+![pptImage](./assets/images/durcit-ppt30.png)
+![pptImage](./assets/images/durcit-ppt31.png)
+![pptImage](./assets/images/durcit-ppt32.png)
+![pptImage](./assets/images/durcit-ppt33.png)
+![pptImage](./assets/images/durcit-ppt34.png)
+![pptImage](./assets/images/durcit-ppt35.png)
+![pptImage](./assets/images/durcit-ppt36.png)
+![pptImage](./assets/images/durcit-ppt37.png)
+![pptImage](./assets/images/durcit-ppt38.png)
+![pptImage](./assets/images/durcit-ppt39.png)
+![pptImage](./assets/images/durcit-ppt40.png)
+![pptImage](./assets/images/durcit-ppt41.png)
+![pptImage](./assets/images/durcit-ppt42.png)
+![pptImage](./assets/images/durcit-ppt43.png)
+![pptImage](./assets/images/durcit-ppt44.png)
+![pptImage](./assets/images/durcit-ppt45.png)
+![pptImage](./assets/images/durcit-ppt46.png)
+![pptImage](./assets/images/durcit-ppt47.png)
+![pptImage](./assets/images/durcit-ppt48.png)
+
+<br>
+</details>
+
+[▲개요로 스크롤](#개요)
+
+<br><br>
+
+
+<details open>
+<summary> 글로 보기 </summary>
+
+
+# 3차 프로젝트 - **Durcit 팀프로젝트 (durckit team project)**
+
+## 💡 팀(팀명:질수없조) 프로젝트
+
+<img width="199" height="231" alt="durcit-removebg 1" src="https://github.com/user-attachments/assets/234fc327-894c-4709-86c8-553825848fdc" />
+
+### 목적
+- **Durcit**은 Reddit에서 영감을 받아 만들어진 게임 커뮤니티 플랫폼으로, 게이머들이 활발하게 소통하고 콘텐츠를 공유할 수 있는 공간입니다.    
+
+- 다양한 기능을 통해 사용자가 더 편리하고 재미있게 커뮤니티 활동을 즐길 수 있도록 설계되었습니다.
+
+<br>
+
+### Durcit의 의미  
+- **Durc =>** 백엔드 어플리케이션의 핵심 기술인 CRUD (생성, 조회, 수정, 삭제) 를 거꾸로 하였습니다.
+
+- **it =>** '그것' 이라는 영단어를 차용했습니다.  
+
+- **Durc + it =>** 2가지가 합쳐진 'DURCIT'은 '상상하는 그것을 CRUD 한다' 라는 의미를 갖습니다.
+
+
+
+
+<br><br>
+
+
+---
+
 
 ## 🌟 주요 기능
 
-### 1. 일반 기능
-- **태그 시스템**: 게시글을 태그로 분류해 쉽게 탐색하고 발견할 수 있도록 지원합니다.
-- **댓글 및 멘션**: 댓글 작성 시 다른 사용자를 멘션하여 소통할 수 있습니다.
-- **채팅**: 실시간 메시징으로 원활한 의사소통을 지원합니다.
-- **게시글**: 게임과 관련된 글, 경험, 미디어를 공유할 수 있습니다.
-- **검색**: 게시글, 태그, 사용자 등을 손쉽게 검색할 수 있습니다.
-- **프로필**: 사용자 프로필에 소개글과 프로필 이미지를 추가하고 수정할 수 있습니다.
-- **피드**: 팔로우한 태그와 게시글을 기반으로 개인화된 피드를 제공합니다.
-- **푸시알람** : 팔로잉한 사용자의 게시글, 채팅 도착, 댓글 등 다양한 상황에서 푸시 알림을 제공합니다.
+### 1. 회원관리
+
+- OAuth 2.0 기반 소셜 로그인(Google, Kakao, Naver) 및 이메일 인증 기반 직접 회원가입 지원.
+
+- 프로필 관리: 닉네임·프로필 사진·자기소개 수정 가능, 비밀번호 찾기/변경(SMTP 인증) 제공.
+
+- 권한 체계: 게스트, 멤버, 매니저, 관리자 4단계로 구분하여 기능 접근 제어.
+
+- 개인 피드 및 다른 회원 피드 열람 가능.
+
+### 2. 게시글
+
+- 게시글 CRUD 지원: 글 작성, 이미지 다중 업로드(S3 연동), 조회, 수정, 삭제(Soft Delete).
+
+- 정렬 방식 제공: Best(조회순), Hot(댓글·좋아요순), New(최신순).
+
+- 게시글 조회 시 조회수 자동 증가.
+
+- 좋아요 및 공감 이모티콘 제공, 소켓 기반 실시간 반응 공유.
+
+### 3. 태그
+
+- 게시글 작성 시 복수 태그 추가 가능.
+
+- 검색창을 통한 태그 기반 게시글 검색 지원.
+
+- Tags 탭에서 사용자가 팔로우한 태그 게시글만 확인 가능(페이징 처리 포함).
+
+### 4. 댓글
+
+- 댓글 및 대댓글 작성 가능, CRUD 지원.
+
+- @닉네임 멘션 기능 제공 → 해당 회원에게 푸쉬 알림 발송.
+
+- 멘션 입력 시 자동완성 리스트 표시.
+
+### 5. 푸쉬 알림
+
+- 멘션, 팔로우(계정·태그), 채팅 등 주요 이벤트 발생 시 실시간 알림 제공.
+
+- WebSocket, 메시징 큐 활용.
+
+- 읽지 않은 알림은 토스트 알림으로 표시.
+
+### 6. 팔로우
+
+- 계정 팔로우: 특정 사용자를 팔로우하면, 해당 사용자의 새 글 등록 시 알림 수신.
+
+- 태그 팔로우: 특정 태그를 팔로우하면, 해당 태그가 포함된 글 등록 시 알림 수신.
+
+- 팔로우/언팔로우는 토글 방식으로 구현.
+
+### 7. 검색
+
+- 검색 기능: 게시글 제목, 태그, 유저 닉네임 검색 지원.
+
+- 키워드 기반으로 입력된 문자열이 포함된 모든 결과 반환.
+
+### 8. 채팅
+
+- 회원 간 1:1 채팅 기능 제공.
+
+- 채팅방 목록에서 사용자별 채팅 내역 확인 가능.
+
+- 실시간 대화 및 메시지 송수신 가능.
+
+### 9. 관리자
+
+- 대시보드: 총 사용자, 게시물, 활동 로그 수 확인 가능(그래프 시각화).
+
+- 로그 관리: 사용자 활동(Endpoint, http 메서드, 상태코드 등) 기록 및 상세 View 제공.
+
+- 회원 관리: 전체 계정 검색, 정지, 삭제, 역할 변경 가능.
+
+- 게시물 관리: 논리 삭제(soft delete로 숨김처리), 영구 삭제(delete), 복원 기능 제공.
+
+<br><br>
 
 ---
 
-### 2. 어드민 페이지 기능
-별도의 어드민 페이지에서 플랫폼 관리를 지원합니다: [https://admin.durcit.site](https://admin.durcit.site)
-- **로그**: 시스템 활동 기록을 확인하고 관리.
-- **회원 관리**: 회원의 역할 변경(관리자, 매니저, 일반 회원), 회원 차단 및 차단 해제.
-- **게시글 관리**: 게시글 숨기기(논리 삭제) 및 영구 삭제.
-- **역할 변경**: 사용자 역할을 필요에 따라 조정 가능.
+## 🚀**개발 환경**
 
----
+<br>
 
-## 🚀 시작하기
 
-### **프로젝트 URL**
-- **메인 사이트**: [https://durcit.site](https://durcit.site)
-- **어드민 페이지**: [https://admin.durcit.site](https://admin.durcit.site)
-
-### **아키텍처**
+- ### 아키텍처
 ![end](https://github.com/user-attachments/assets/6d5d4e7b-5e35-4672-94b6-d1dbdd869f4b)
 
-### **ERD**
+<br><br>
+
+- ### **ERD**
 <img width="1219" alt="erd-diagram" src="https://github.com/user-attachments/assets/93ce18c0-8450-404a-a8f5-f3a4dccc5c8c" />
 
+<br><br>
 
-### **기술 스택**
-- **프론트엔드**: React.js, Tailwind CSS
-- **백엔드**: Spring Boot, JPA, WebSocket, Spring Security, JWT 인증, RabbitMQ
-- **데이터베이스**: MySQL
-- **클라우드 서비스**: AWS S3(파일 업로드), AWS EC2, AWS RDS, AWS Route 53
-- **기타**: Nginx
+- ### **플로우 차트**
+<img width="955" height="685" alt="스크린샷 2024-12-26 224138" src="https://github.com/user-attachments/assets/cb92fd4e-fd1b-437d-94e4-470058db260f" />
+
+<br><br>
+
+- ### **활용 기술**
+
+| 분류 | 기술 상세 |
+| :--- | :--- |
+| **IDE** | IntelliJ, WebStorm, VSCode |
+| **버전 관리 시스템** | Git, GitHub |
+| **언어** | Java, JavaScript |
+| **프레임워크** | **백엔드:** Spring Boot( jpa / websoket / security / jwt / rabbitMQ )  **프론트엔드:** React, Tailwind CSS |
+| **데이터베이스** | MySQL |
+| **배포 환경** | Nginx, AWS( S3(파일 업로드) / EC2 / RDS / Route 53 ) |
+
+
+<br><br><br>
 
 ---
-### 팀원 소개
+## 팀 구성 및 역할
 
 ##### 박유빈 (팀장)
 - **담당 역할**: 백엔드 개발
@@ -71,7 +247,7 @@
     - 웹소켓과 RabbitMQ를 활용한 실시간 기능 구현 (푸시 알람, 채팅, 이모지)
     - 배포 환경 설정 및 운영
 
----
+
 
 ##### 신명진 (팀원)
 - **담당 역할**: 프론트엔드 개발
@@ -82,7 +258,7 @@
     - 메인 UI 컴포넌트 구현 (Sidebar, TopBar, 드롭다운 로그인 창 등)
     - Axios를 활용한 통신 로직 작성 및 에러 처리
 
----
+
 
 ##### 최민호 (팀원)
 - **담당 역할**: 서비스 기획
@@ -90,7 +266,7 @@
     - 서비스 기획 및 회의록 작성
     - 데이터베이스 설계
 
----
+
 
 ##### 최요셉 (팀원)
 - **담당 역할**: 백엔드 개발
@@ -102,8 +278,28 @@
     - AssertJ, JUnit 기반 TDD 진행
 
 
+
+<br><br><br>
+
 ---
-### 트러블 슈팅
+
+## 📅 프로젝트 수행 절차 및 일정
+
+| 구분 | 기간 (2024) | 활동 | 비고 |
+| :--- | :--- | :--- | :--- |
+| **사전 기획과 구조 설계** | 12.11.(수) | 주제 선정, 기획 및 구조 설계 | 요구사항 정리, ERD, 피그마 |
+| **협업 방식 기획** | 12.12.(목) | 코딩 컨벤션, 깃 브랜칭 설정, 역할 배분 | 스크럼 방식 |
+| **기능 개발** | 12.13.(금) ~ 12.27.(금) | 맡은 역할, 다음 역할 개발 | 코딩 컨벤션 준수 |
+| **점검 및 배포** | 12.27.(금) ~ 12.31.(화) | 작동 점검 및 배포 | 오류 수정 및 최종 배포 |
+
+
+
+<br><br><br>
+
+---
+
+
+## 트러블 슈팅
 #### 1. 삭제된 게시물 복구 기능 구현 중, 복구 후 상태 관리 문제 (신명진)
 
 - **문제**:
@@ -130,6 +326,7 @@ const handleRestore = async (postId) => {
 - **결과**:
     - 복구된 게시물이 즉시 화면에서 제거되어 사용자 경험이 개선되었습니다.
 
+<br>
 
 #### 2. AOP 요청/응답 로깅 중 HttpServletRequest 다중 읽기 문제 (박유빈)
 
@@ -168,6 +365,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 - **결과**
   AOP에서 `HttpServletRequest`를 다중 읽기가 가능해졌고, 정확한 요청/응답 로깅이 가능해졌습니다. 로깅의 신뢰도가 향상되었으며, 디버깅과 모니터링 작업이 훨씬 용이해졌습니다.
 
+
+<br>
+
 #### 3. 작업에 대한 구체적인 이해 부족 문제 (최요셉)
 
 - **문제**:
@@ -185,38 +385,43 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 - **결과**:
   구체적인 작업 계획을 세우고 실행할 수 있었으며, 태그 기능을 성공적으로 구현할 수 있었습니다.
 
+<br><br><br>
 
 ---
 
-### API 명세서
+# API 명세서
 
-#### 1. Admin 인증 API
+<br><br>
+
+## Admin API 명세서
+
+- #### Admin 인증 API
 
 | **기능**       | **Method** | **URL**           | **Request Body**                                    | **Response**                                                                                   |
 |----------------|------------|-------------------|---------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | 로그인          | POST       | /admins/login   | { "username": "string", "password": "string" }   | { "accessToken": "string", <br/>"refreshToken": "string" }                                       |
 
----
+<br>
 
-#### 2. 통계 API
+- #### 통계 API
 
 | **기능**               | **Method** | **URL**                | **Request Body** | **Response**                                                     |
 |------------------------|------------|------------------------|------------------|------------------------------------------------------------------|
 | 대시보드 통계 조회      | GET        | /statistics          | -                | { "code": "GET_ADMIN_LOG_SUCCESS", <br/>"data": { ... } }           |
 | 최근 통계 조회          | GET        | /statistics/recent   | -                | { "code": "GET_ADMIN_LOG_SUCCESS", <br/>"data": [ ... ] }           |
 
----
+<br>
 
-#### 3. 로그 API
+- #### 로그 API
 
 | **기능**               | **Method** | **URL**                | **Request Body** | **Response**                                                     |
 |------------------------|------------|------------------------|------------------|------------------------------------------------------------------|
 | 로그 전체 조회 (페이징) | GET        | /logs                | -                | { "code": "GET_ADMIN_LOG_SUCCESS", <br/>"data": { "content": [ ... ] } } |
 | 최근 로그 조회          | GET        | /logs/recent         | -                | { "code": "GET_ADMIN_LOG_SUCCESS", <br/>"data": [ ... ] }           |
 
----
+<br>
 
-#### 4. 역할 관리 API
+- #### 역할 관리 API
 
 | **기능**               | **Method** | **URL**                              | **Request Body** | **Response**                               |
 |------------------------|------------|--------------------------------------|------------------|------------------------------------------|
@@ -224,9 +429,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 역할을 MANAGER로 변경  | PUT        | /role-updates-manager/{memberId}   | -                | { "code": "UPDATE_ROLE_SUCCESS" }       |
 | 역할을 MEMBER로 변경   | PUT        | /role-updates-member/{memberId}    | -                | { "code": "UPDATE_ROLE_SUCCESS" }       |
 
----
+<br>
 
-#### 5. 사용자 관리 API
+- #### 사용자 관리 API
 
 | **기능**            | **Method** | **URL**                | **Request Body** | **Response**                                                     |
 |---------------------|------------|------------------------|------------------|------------------------------------------------------------------|
@@ -235,9 +440,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 사용자 차단 해제     | PUT        | /unblock/{memberId}  | -                | { "code": "UPDATE_USER_BLOCK_STATUS" }                         |
 | 사용자 삭제          | DELETE     | /delete/{memberId}   | -                | { "code": "DELETE_USER_PERMANENT_SUCCESS" }                    |
 
----
+<br>
 
-#### 6. 게시글 관리 API
+- #### 게시글 관리 API
 
 | **기능**            | **Method** | **URL**                              | **Request Body** | **Response**                                                     |
 |---------------------|------------|--------------------------------------|------------------|------------------------------------------------------------------|
@@ -248,23 +453,25 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 게시글 영구 삭제     | DELETE     | /posts/{postId}/permanent          | -                | { "code": "DELETE_POST_SUCCESS" }                              |
 
 
+<br><br>
 
-### Chat API 명세서
 
-#### 공통 정보
-- **Base URL**: /api/members
+## Chat API 명세서
 
----
+- #### 공통 정보
+**Base URL**: /api/members
 
-#### 1. WebSocket 기반 채팅 API
+<br>
+
+- #### WebSocket 기반 채팅 API
 
 | **기능**        | **Method** | **URL**           | **Request Body**                                     | **Response**                                    |
 |-----------------|------------|-------------------|----------------------------------------------------|------------------------------------------------|
 | 채팅 메시지 전송 | WebSocket  | /chat/send      | { "roomId": "string", <br/>"senderId": "string", <br/>"message": "string" } | -                                              |
 
----
+<br>
 
-#### 2. REST 기반 채팅 API
+- #### REST 기반 채팅 API
 
 | **기능**              | **Method** | **URL**                            | **Request Body**                                   | **Response**                                                                                     |
 |-----------------------|------------|------------------------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -273,14 +480,17 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 특정 채팅방 메시지 조회 | GET        | /rooms/{roomId}/messages         | -                                                | { "code": "GET_CHAT_SUCCESS", <br/>"data": [ { "messageId": "                                         |
 
 
-### Comment API 명세서
+<br><br>
 
-#### 공통 정보
-- **Base URL**: /api
 
----
+## Comment API 명세서
 
-#### 1. Comment API
+- #### 공통 정보
+**Base URL**: /api
+
+<br>
+
+- #### Comment API
 
 | **기능**              | **Method** | **URL**                          | **Request Body**                                   | **Response**                                                                                     |
 |-----------------------|------------|----------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -289,31 +499,36 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 댓글 삭제              | DELETE     | /members/comments/{commentId} | -                                                | { "code": "DELETE_COMMENT_SUCCESS" }                                                         |
 | 사용자의 댓글 조회      | GET        | /members/my-comments/{memberId} | -                                                | { "code": "GET_COMMENT_SUCCESS", <br/>"data": [ { "commentId": "number", "content": "string" } ] } |
 
----
+<br>
 
-#### 2. Mention API
+
+- #### Mention API
 
 | **기능**              | **Method** | **URL**             | **Request Body**  | **Response**                                                                                     |
 |-----------------------|------------|---------------------|-------------------|-------------------------------------------------------------------------------------------------|
 | 멘션 가능한 멤버 조회  | GET        | /members/mentions | query=string    | { "code": "GET_MENTION_POSSIBLE_MEMBERS_SUCCESS", <br/>"data": [ { "memberId": "number", "name": "string" } ] } |
 
 
-### Feed & Post Facade API 명세서
 
-#### 공통 정보
-- **Base URL**: /api
+<br><br>
 
----
 
-#### 1. Feed API
+## Feed & Post Facade API 명세서
+
+- #### 공통 정보
+**Base URL**: /api
+
+<br>
+
+- #### Feed API
 
 | **기능**              | **Method** | **URL**                  | **Request Body** | **Response**                                                                                     |
 |-----------------------|------------|--------------------------|------------------|-------------------------------------------------------------------------------------------------|
 | 사용자 정보 조회       | GET        | /feeds/users/{userId}  | -                | { "code": "GET_USER_PROFILE_SUCCESS", <br/>"data": { "userId": "number", "userName": "string", ... } } |
 
----
+<br>
 
-#### 2. Post Facade API
+- #### Post Facade API
 
 | **기능**              | **Method** | **URL**                          | **Request Body**                                   | **Response**                                                                                     |
 |-----------------------|------------|----------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -323,14 +538,16 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 게시글 삭제            | DELETE     | /members/posts/{postId}       | -                                                | { "code": "DELETE_POST_SUCCESS" }                                                             |
 
 
-### Follow API 명세서
+<br><br>
 
-#### 공통 정보
-- **Base URL**: /api/members
+## Follow API 명세서
 
----
+- #### 공통 정보
+**Base URL**: /api/members
 
-#### 1. 멤버 팔로우 API
+<br>
+
+- #### 멤버 팔로우 API
 
 | **기능**            | **Method** | **URL**                     | **Request Body**                         | **Response**                                                                                     |
 |---------------------|------------|-----------------------------|------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -339,9 +556,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 팔로워 목록 조회      | GET        | /follows/followers        | followeeId: number                     | { "code": "GET_MEMBER_FOLLOWER_SUCCESS", <br/>"data": [ { "memberId": "number", "name": "string" } ] } |
 | 팔로잉 목록 조회      | GET        | /follows/followees        | followerId: number                     | { "code": "GET_MEMBER_FOLLOWEE_SUCCESS", <br/>"data": [ { "memberId": "number", "name": "string" } ] } |
 
----
+<br>
 
-#### 2. 태그 팔로우 API
+- #### 태그 팔로우 API
 
 | **기능**               | **Method** | **URL**                     | **Request Body**                             | **Response**                                                                                     |
 |------------------------|------------|-----------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -349,22 +566,25 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 멤버의 태그 팔로우 조회 | GET        | /tag-follow/{memberId}    | -                                            | { "code": "GET_TAG_FOLLOW_SUCCESS", <br/>"data": [ { "tagId": "number", "tagName": "string", ... } ] } |
 
 
-### Post API 명세서
 
-#### 공통 정보
-- **Base URL**: /api
+<br><br>
 
----
+## Post API 명세서
 
-#### 1. Emoji API
+- #### 공통 정보
+**Base URL**: /api
+
+<br>
+
+- #### Emoji API
 
 | **기능**              | **Method** | **URL**         | **Request Body**                         | **Response**                                                                                     |
 |-----------------------|------------|-----------------|------------------------------------------|-------------------------------------------------------------------------------------------------|
 | 이모지 추가/토글      | WebSocket  | /addEmoji     | { "postId": "number", "emojiType": "string" } | { "code": "EMOJI_TOGGLE_SUCCESS", <br/>"data": { "postId": "number", "emojiType": "string" } }     |
 
----
+<br>
 
-#### 2. Like API
+- #### Like API
 
 | **기능**               | **Method** | **URL**                      | **Request Body** | **Response**                                                                                     |
 |------------------------|------------|------------------------------|------------------|-------------------------------------------------------------------------------------------------|
@@ -372,9 +592,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 게시글 좋아요 토글      | POST       | /members/likes/{postId}/toggle | -                | { "code": "TOGGLE_LIKE_SUCCESS", <br/>"data": true/false }                                         |
 | 사용자가 좋아요한 게시글 조회 | GET   | /members/likes/{memberId} | -                | { "code": "GET_POST_LIKES_SUCCESS", <br/>"data": [ { "postId": "number", "title": "string", ... } ] } |
 
----
+<br>
 
-#### 3. Post API
+- #### Post API
 
 | **기능**                      | **Method** | **URL**                               | **Request Body**                                   | **Response**                                                                                     |
 |-------------------------------|------------|---------------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -385,9 +605,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 내 게시글 조회                | GET        | /members/my-posts                   | -                                                | { "code": "GET_POST_SUCCESS", <br/>"data": [ { "postId": "number", "title": "string", ... } ] }     |
 | 특정 사용자의 피드 게시글 조회 | GET        | /feed/{userId}                      | -                                                | { "code": "GET_POST_SUCCESS", <br/>"data": [ { "postId": "number", "title": "string", ... } ] }     |
 
----
+<br>
 
-#### 4. (미완성/주석 처리된) 게시글 작성/수정/삭제 API
+- #### (미완성/주석 처리된) 게시글 작성/수정/삭제 API
 
 | **기능**                      | **Method** | **URL**                       | **Request Body**                                   | **Response**                                                                                     |
 |-------------------------------|------------|-------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -397,43 +617,47 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 게시글 상세 조회 및 조회수 증가 | GET        | /{postId}                  | -                                                | { "code": "GET_POST_SUCCESS", <br/>"data": { "postId": "number", "title": "string", ... } }         |
 
 
-### Push Notification API 명세서
+<br><br>
 
-#### 공통 정보
-- **Base URL**: /api/members/pushs
+## Push Notification API 명세서
 
----
+- #### 공통 정보
+**Base URL**: /api/members/pushs
 
-#### 1. Push API
+<br>
+
+- #### Push API
 
 | **기능**                     | **Method** | **URL**                     | **Request Body** | **Response**                                                                                     |
 |------------------------------|------------|-----------------------------|------------------|-------------------------------------------------------------------------------------------------|
 | 특정 멤버의 푸시 알림 조회    | GET        | /                         | memberId: string | { "code": "GET_PUSHS_SUCCESS", <br/>"data": [ { "pushId": "number", "message": "string", "status": "string" } ] } |
 | 특정 푸시 알림 확인 처리      | PUT        | /{pushId}/confirm         | -                | { "code": "UPDATE_PUSH_SUCCESS" }                                                             |
 
----
+<br><br>
 
-### Search API 명세서
 
-#### 공통 정보
-- **Base URL**: /api/search
+## Search API 명세서
 
----
+- #### 공통 정보
+**Base URL**: /api/search
 
-#### 1. Search API
+<br>
+
+- #### Search API
 
 | **기능**                 | **Method** | **URL**      | **Request Body**                              | **Response**                                                                                     |
 |--------------------------|------------|--------------|-----------------------------------------------|-------------------------------------------------------------------------------------------------|
 | 검색 결과 조회           | GET        | /          | query: string                               | { "code": "SEARCH_SUCCESS", <br/>"data": [ { "id": "number", "type": "string", "content": "string" } ] } |
 
 
----
+<br><br>
 
-### Security API 명세서
 
----
+## Security API 명세서
 
-#### 1. 인증 (Auth) API
+<br>
+
+- #### 인증 (Auth) API
 
 | **기능**                     | **Method** | **URL**         | **Request Body**                                 | **Response**                                                                                     |
 |------------------------------|------------|-----------------|------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -442,9 +666,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 회원가입                     | POST       | /auth/register | multipart/form-data                          | { "code": "CREATED_USER" }                                                                   |
 | 이메일 인증                  | POST       | /auth/verify  | { "token": "string" }                         | { "code": "VERIFY_EMAIL_SUCCESS" }                                                           |
 
----
+<br>
 
-#### 2. 비밀번호 재설정 API
+- #### 비밀번호 재설정 API
 
 | **기능**                     | **Method** | **URL**                     | **Request Body**                 | **Response**                                                                                     |
 |------------------------------|------------|-----------------------------|----------------------------------|-------------------------------------------------------------------------------------------------|
@@ -452,9 +676,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 인증 코드 확인               | POST       | /api/members/passwords/verify | { "code": "string" }          | { "code": "VERIFY_EMAIL_SUCCESS" } <br/>or { "code": "VERIFY_EMAIL_FAIL" }                      |
 | 비밀번호 변경                | POST       | /api/members/passwords/change  | { "newPassword": "string" }   | { "code": "PASSWORD_RESET_SUCCESS" }                                                         |
 
----
+<br>
 
-#### 3. 프로필 관리 API
+- #### 프로필 관리 API
 
 | **기능**                     | **Method** | **URL**                                | **Request Body**                                 | **Response**                                                                                     |
 |------------------------------|------------|----------------------------------------|------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -464,32 +688,51 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 | 자기소개 변경                | PUT        | /api/members/profile/bio-updates     | { "bio": "string" }                          | { "code": "UPDATE_BIO_SUCCESS", <br/>"data": { "nickname": "string", "bio": "string", ... } }      |
 | 자기소개 조회                | GET        | /api/members/profile/bio             | -                                              | { "code": "GET_BIO_SUCCESS", <br/>"data": "string" }                                               |
 
----
+<br><br>
 
 
-### Upload API 명세서
+## Upload API 명세서
 
-#### 공통 정보
-- **Base URL**: /api/members
+- #### 공통 정보
+**Base URL**: /api/members
 
----
+<br>
 
-#### 1. 프로필 이미지 업로드 API
+- #### 프로필 이미지 업로드 API
 
 | **기능**               | **Method** | **URL**                     | **Request Body**                             | **Response**                                                                                     |
 |------------------------|------------|-----------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------|
 | 프로필 이미지 업데이트 | PUT        | /profile                 | MultipartFile                              | { "code": "UPDATE_PROFILE_IMAGE_SUCCESS" }                                                    |
 
----
+<br>
 
-#### 2. 파일 업로드 API
+- #### 파일 업로드 API
 
 | **기능**               | **Method** | **URL**                     | **Request Body**                             | **Response**                                                                                     |
 |------------------------|------------|-----------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------|
 | 파일 업로드            | POST       | /upload/files            | { "postId": "number", "files": [MultipartFile, ...] } | { "code": "UPLOAD_FILES_SUCCESS" }                                                            |
 | 파일 업데이트          | PUT        | /upload/update           | { "postId": "number", <br/>"imageIdsToDelete": [number, ...], <br/>"newFiles": [MultipartFile, ...] } | { "code": "UPDATE_FILES_SUCCESS" }                                                            |
 
----
+<br>
+
+
+</details>
+
+
+
+[▲개요로 스크롤](#개요)
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
 
 
 
