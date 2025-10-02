@@ -17,7 +17,7 @@
 * 스프링: https://github.com/yoda-yoda/Project3_durcit-spring  
 * 리액트: https://github.com/yoda-yoda/Project3_durcit-react  
 * 리액트(관리자 기능) : https://github.com/yoda-yoda/Project3_durcit-admin  
-* 배포 : https://github.com/yoda-yoda/Project3_spring-deploy  
+* 배포 : https://github.com/yoda-yoda/project3-durcit-spring-deploy
 
 <br><br>
 
